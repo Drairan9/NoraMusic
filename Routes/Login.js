@@ -1,11 +1,12 @@
 import express from 'express';
-import * as LoginController from '#Controllers/LoginController.js';
 import { isAuthenticated } from '#Utils/Middlewares.js';
 import passport from 'passport';
 
 var router = express.Router();
 
-router.get('/', isAuthenticated, LoginController.main);
+router.get('/', isAuthenticated, (req, res) => {
+    res.send('Login page');
+});
 
 // All logic is in ./Strategies/discord.js
 router.get(

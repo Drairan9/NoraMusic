@@ -1,15 +1,14 @@
 import express from 'express';
 import { isAuthenticated } from '#Utils/Middlewares.js';
-import { getUserAvatarUrlService } from '#Services/UserService.js';
-import User from '#Models/UserModel.js';
+import * as IndexController from '#Controllers/IndexController.js';
+import User from '#Models/UserModel.js'; // TODO: remove that
 
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', isAuthenticated, (req, res) => {
-    res.send('Games / others');
-});
+router.get('/', isAuthenticated, IndexController.mainController);
 
+// TODO: Engineering routes
 router.get('/userinfo', isAuthenticated, async (req, res) => {
     res.send(req.user);
 });

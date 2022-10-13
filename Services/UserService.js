@@ -12,7 +12,27 @@ export async function getUserAvatarUrlService(accessToken) {
 export async function getUserGuildsService(id) {
     const user = await User.findById(id);
     if (!user) throw new Error('No user found');
-    return axios.get(`${DISCORD_API_URL}/users/@me/guilds`, {
-        headers: { Authorization: `Bearer ${user.accessToken}` },
+    const res = await axios.get(`${DISCORD_API_URL}/users/@me/guilds`, {
+        headers: { Authorization: `Bearer ${user.access_token}` },
     });
+    return res.data;
+}
+
+export async function getBotGuildsService() {
+    const res = await axios.get(`${DISCORD_API_URL}/users/@me/guilds`, {
+        headers: { Authorization: `Bot ${process.env.BOT_TOKEN}` },
+    });
+    return res.data;
+}
+
+export async function getLegalUserGuilds(id) {
+    const userGuilds = await getUserGuildsService(id);
+    const botGuilds = await getBotGuildsService();
+    var mutualGuilds = userGuilds.filter((guild) => botGuilds.some((botGuild) => botGuild.id === guild.id));
+    mutualGuilds.forEach((guild) => {
+        delete guild.features;
+        delete guild.permissions;
+        guild.avatarUrl = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.jpg`;
+    });
+    return mutualGuilds;
 }
