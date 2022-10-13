@@ -1,0 +1,28 @@
+import express from 'express';
+import * as LoginController from '#Controllers/LoginController.js';
+import { isAuthenticated } from '#Utils/Middlewares.js';
+import passport from 'passport';
+
+var router = express.Router();
+
+router.get('/', isAuthenticated, LoginController.main);
+
+// All logic is in ./Strategies/discord.js
+router.get(
+    '/auth/discord',
+    passport.authenticate('discord', {
+        failureRedirect: '/login',
+    })
+);
+
+router.get(
+    '/auth/discord/redirect',
+    passport.authenticate('discord', {
+        failureRedirect: '/login',
+    }),
+    function (req, res) {
+        res.redirect('/'); // Successful auth
+    }
+);
+
+export default router;
