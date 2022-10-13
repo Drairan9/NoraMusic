@@ -3,10 +3,9 @@ import { getUserGuildsService, getBotGuildsService, getLegalUserGuilds } from '#
 
 export async function mainController(req, res) {
     try {
-        const guilds = await getLegalUserGuilds(req.user.discord_id);
-        guilds.push({ test: "titanium </script><script>alert('pwnd!')</script> oxide" });
-        const data = btoa(JSON.stringify(guilds));
-        res.render('Index/Index', { guilds: data });
+        var guilds = await getLegalUserGuilds(req.user.discord_id);
+        guilds = btoa(JSON.stringify(guilds));
+        res.render('Guild/Index', { guilds: guilds });
     } catch (err) {
         logger.error(err);
         res.status(400).send('Error');

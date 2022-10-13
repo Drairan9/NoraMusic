@@ -1,0 +1,11 @@
+<h1>Welcome Guild Index</h1>
+<p><%= JSON.stringify(guilds) %></p>
+
+
+<% if (guilds) { %>
+    <script>
+       guilds = atob('<%- guilds %>')
+
+       console.log(guilds)
+    </script>
+<% } %>

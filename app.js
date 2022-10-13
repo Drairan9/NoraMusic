@@ -8,6 +8,7 @@ import * as discordStrategy from '#Strategies/discord.js';
 
 import indexRouter from '#Root/Routes/Index.js';
 import loginRouter from '#Root/Routes/Login.js';
+import guildRouter from '#Root/Routes/Guild.js';
 
 const app = express();
 
@@ -21,6 +22,10 @@ app.use(
     })
 );
 
+// View engine
+app.set('view engine', 'ejs');
+app.set('views', 'Views');
+
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -28,6 +33,7 @@ app.use(passport.session());
 // Routes
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
+app.use('/guild', guildRouter);
 
 app.listen(process.env.SERVER_PORT, () => {
     logger.info(`*Norabot web dj* running on port ${process.env.SERVER_PORT}`);
