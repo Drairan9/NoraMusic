@@ -26,6 +26,9 @@ app.use(
 app.set('view engine', 'ejs');
 app.set('views', 'Views');
 
+// Static
+app.use(express.static('./Public'));
+
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());

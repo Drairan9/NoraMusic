@@ -1,11 +1,32 @@
-<h1>Welcome Guild Index</h1>
-<p><%= JSON.stringify(guilds) %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guilds</title>
+    <script src="Js/Guild/loadView.js" defer></script>
+    <link rel="stylesheet" href="Css/Guild/main.css">
+</head>
+<body>
+    <h1 class="title">Choose Discord server</h1>
 
+    <div class="elements-container">
+        <div class="element" onclick="test(this)" data-serverid="11111111111111">
+            <div class="element-icon">
+                <img src="https://cdn.discordapp.com/avatars/359775787693506571/f489f5093f86834f2ce0de146daa2b39.jpg" alt="Server icon">
+            </div>
+            <div class="element-main-text-container">
+                <h4>Example guild</h4>
+                <h6 class="element-id">ID: 11111111111111</h6>
+            </div>
+        </div>
+    </div>
 
-<% if (guilds) { %>
-    <script>
-       guilds = atob('<%- guilds %>')
-
-       console.log(guilds)
-    </script>
-<% } %>
+    <% if (guilds) { %>
+        <script>
+        guilds = atob('<%- guilds %>')
+        </script>
+    <% } %>
+</body>
+</html>
