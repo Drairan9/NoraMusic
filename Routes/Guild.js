@@ -7,7 +7,8 @@ var router = express.Router();
 router.get('/', isAuthenticated, GuildController.mainController);
 
 router.get('/:serverid', isAuthenticated, (req, res) => {
-    res.send(`Guild ${req.params.serverid}`);
+    //res.send(`Guild ${req.params.serverid}`);
+    res.render('Guild/Dashboard');
 });
 
 export default router;

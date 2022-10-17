@@ -5,6 +5,7 @@ import { cassandraStore } from '#Database/Index.js';
 import passport from 'passport';
 import logger from '#Logger';
 import * as discordStrategy from '#Strategies/discord.js';
+import createSocket from './Socket/Index.js';
 
 import indexRouter from '#Root/Routes/Index.js';
 import loginRouter from '#Root/Routes/Login.js';
@@ -38,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/guild', guildRouter);
 
-app.listen(process.env.SERVER_PORT, () => {
+const server = app.listen(process.env.SERVER_PORT, () => {
     logger.info(`*Norabot web dj* running on port ${process.env.SERVER_PORT}`);
 });
+createSocket(server);

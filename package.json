@@ -30,6 +30,10 @@
     "express-session": "^1.17.3",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
+    "socket.io": "^4.5.3",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "crypto": "^1.0.1"
   }
 }

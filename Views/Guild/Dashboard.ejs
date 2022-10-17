@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild dashboard</title>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <style>
+        table, th, td {
+          border:1px solid black;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <th>Song</th>
+            <th>Playlist</th>
+            <th>Join vc</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="url-song" placeholder="Music url">
+                <button onclick="playSong();">SEND</button>
+            </td>
+            <td>
+                <input type="text" id="url-playlist" placeholder="Music url">
+                <button onclick="playPlaylist();">SEND</button>
+            </td>
+            <td>
+                <button onclick="joinVc();">Join VC</button>
+            </td>
+        </tr>
+    </table>
+
+
+
+    <script>
+        const socket = io('ws://localhost:3000');
+
+        socket.on('connection', () => {
+            console.log(socket.id)
+        })
+
+        function playSong() {
+            let url = document.querySelector('#url-song')
+            socket.emit('play-song', url.value, (res) => {
+                console.log(res)
+            })
+        }
+
+        function playPlaylist() {
+            let url = document.querySelector('#url-playlist')
+            socket.emit('play-playlist', url.value, (res) => {
+                console.log(res)
+            })
+        }
+
+        function joinVc() {
+            console.log('Join vc func')
+            socket.emit('join-vc', (res) => {
+                console.log(res)
+            })
+        }
+      </script>
+</body>
+</html>
