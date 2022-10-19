@@ -22,7 +22,7 @@ router.get(
         failureRedirect: '/login',
     }),
     function (req, res) {
-        res.redirect('/'); // Successful auth
+        res.redirect('/guild'); // Successful auth
     }
 );
 

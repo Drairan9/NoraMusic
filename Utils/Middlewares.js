@@ -1,4 +1,7 @@
+import Session from '#Models/SessionModel.js';
+
 export const isAuthenticated = (req, res, next) => (req.user ? next() : res.redirect('/login/auth/discord'));
+export const hasGuilds = (req, res, next) => (req.session.guilds ? next() : res.redirect('/guild'));
 
 /**
  * Convert Cookie String into Map with cookies
@@ -27,3 +30,20 @@ export const parseCookieString = (cookieString) => {
 export const readConnectSid = (sessionID) => {
     return sessionID.substring(4, 36);
 };
+
+/**
+ *  Get from socket handshake discord_id & url request
+ * @param {String} Headers Socket.io headers
+ * @returns {Object} Object with discord_id & url
+ */
+export async function readSocketHandshake(headers) {
+    let requestUrl = headers.referer.split('/');
+    let clientSid = readConnectSid(parseCookieString(headers.cookie).get('connect.sid'));
+    let DbSessionCookie = await Session.findBySid(clientSid);
+    DbSessionCookie = JSON.parse(DbSessionCookie.sid);
+    let uId = DbSessionCookie.passport.user;
+    return {
+        discord_id: uId,
+        url: requestUrl[requestUrl.length - 1],
+    };
+}

@@ -10,7 +10,7 @@ function renderElement(name, id, avatarUrl) {
     // Prepare containers
     let container = document.createElement('div');
     container.classList.add('element');
-    container.setAttribute('onclick', 'test(this)');
+    container.setAttribute('onclick', 'redirect(this)');
     container.setAttribute('data-serverid', id);
 
     let containerIcon = document.createElement('div');
@@ -41,7 +41,7 @@ function renderElement(name, id, avatarUrl) {
     elementContainer.appendChild(container);
 }
 
-function test(data) {
+function redirect(data) {
     console.log(data.dataset.serverid);
     window.location.href = `guild/${data.dataset.serverid}`;
 }

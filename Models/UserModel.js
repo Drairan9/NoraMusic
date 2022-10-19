@@ -52,7 +52,7 @@ export default class User {
             const params = [discordId];
             await cassandra.execute(query, params, { prepare: true }, (err, res) => {
                 if (err) reject(err);
-                if (res.rows.length <= 0) resolve(false);
+                if (res.rowLength <= 0) resolve(false);
                 resolve({
                     discord_id: discordId,
                     access_token: res.rows[0].access_token,
@@ -60,21 +60,6 @@ export default class User {
                     avatar_url: res.rows[0].avatar_url,
                 });
             });
-        });
-    }
-
-    static async clearDb() {
-        await cassandra.execute('TRUNCATE norausers', (err, res) => {
-            console.log(err);
-        });
-        await cassandra.execute('TRUNCATE sessions', (err, res) => {
-            console.log(err);
-        });
-        await cassandra.execute('TRUNCATE avatars_by_id', (err, res) => {
-            console.log(err);
-        });
-        await cassandra.execute('TRUNCATE points_by_id', (err, res) => {
-            console.log(err);
         });
     }
 }

@@ -1,67 +1,56 @@
 import { Server } from 'socket.io';
-import Session from '#Models/SessionModel.js';
-import { parseCookieString, readConnectSid, isAuthenticated } from '#Utils/Middlewares.js';
-var io;
+import { readSocketHandshake } from '#Utils/Middlewares.js';
+import { isInGuild } from '#Services/UserService.js';
+import logger from '#Utils/Logger.js';
+
+let io;
 
 export default function createSocket(server) {
     io = new Server(server);
 
     io.on('connection', (socket) => {
-        console.log(`User connected ${socket.id}`);
-
-        socket.on('message', async (args, callback) => {
-            //console.log(socket.handshake.headers);
-            var requestCookies = socket.handshake.headers.cookie;
-
-            let clientSid = readConnectSid(parseCookieString(requestCookies).get('connect.sid'));
-
-            let DbSessionCookie = await Session.findBySid(clientSid);
-
-            DbSessionCookie = JSON.parse(DbSessionCookie.sid);
-
-            let uId = DbSessionCookie.passport.user;
-
-            console.log(uId);
+        socket.on('server-hello', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            // Make sure that user is connecting with allowed guild
+            let legalGuilds = await isInGuild(userData.discord_id, userData.url);
+            if (legalGuilds.length <= 0) {
+                try {
+                    return callback({ isSuccess: false, error: true, errorMessage: 'Illegal guild' });
+                } catch (err) {
+                    logger.error(err);
+                }
+            }
+            // Clear rooms
+            socket.rooms.forEach((room) => {
+                socket.leave(room);
+            });
+            socket.join(userData.url);
             try {
-                callback('Success');
-            } catch (e) {
-                console.log('Callback removed');
+                callback({ isSuccess: true, error: false, errorMessage: '' });
+            } catch (err) {
+                logger.error(err);
             }
         });
 
-        socket.on('play-song', async (arg, callback) => {
-            var requestCookies = socket.handshake.headers.cookie;
-            let requestUrl = socket.handshake.headers.referer.split('/');
-            let clientSid = readConnectSid(parseCookieString(requestCookies).get('connect.sid'));
-            let DbSessionCookie = await Session.findBySid(clientSid);
-            DbSessionCookie = JSON.parse(DbSessionCookie.sid);
-            let uId = DbSessionCookie.passport.user;
-            socket.broadcast.emit('bot-play-song', { uId, url: arg, guildId: requestUrl[requestUrl.length - 1] });
-            console.log('Play song');
+        socket.on('bot-hello-relay', async (arg, callback) => {
+            if (arg !== process.env.CLIENT_ID) {
+                try {
+                    return callback({ isSuccess: false, error: true, errorMessage: 'Invalid credentials.' });
+                } catch (err) {
+                    logger.error(err);
+                }
+            }
+            // Clear rooms
+            socket.rooms.forEach((room) => {
+                socket.leave(room);
+            });
+            socket.join(process.env.CLIENT_ID);
             try {
-                callback('No errors');
-            } catch (error) {
-                console.log(`Error: ${error}`);
+                callback({ isSuccess: true, error: false, errorMessage: '' });
+                logger.info('Bot connected with server.');
+            } catch (err) {
+                logger.error(err);
             }
         });
-
-        socket.on('join-vc', async (arg, callback) => {
-            var requestCookies = socket.handshake.headers.cookie;
-            let requestUrl = socket.handshake.headers.referer.split('/');
-            let clientSid = readConnectSid(parseCookieString(requestCookies).get('connect.sid'));
-            let DbSessionCookie = await Session.findBySid(clientSid);
-            DbSessionCookie = JSON.parse(DbSessionCookie.sid);
-            let uId = DbSessionCookie.passport.user;
-            socket.broadcast.emit('bot-join-vc', { uId, guildId: requestUrl[requestUrl.length - 1] });
-            try {
-                callback('No errors');
-            } catch (error) {
-                console.log(`Error: ${error}`);
-            }
-        });
-    });
-
-    io.on('disconnect', (socket) => {
-        console.log(`User disconnected ${socket.id}`);
     });
 }

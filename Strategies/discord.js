@@ -7,6 +7,7 @@ import { getUserAvatarUrlService } from '#Services/UserService.js';
 const scopes = ['identify', 'guilds'];
 
 passport.serializeUser((user, done) => {
+    console.log('Serialization SERIALIZE');
     return done(null, user.discord_id);
 });
 
@@ -34,7 +35,6 @@ passport.use(
                 const existingUser = await User.findOneAndUpdate(profile.id, accessToken, refreshToken, avatarUrl);
                 if (existingUser) return done(null, existingUser);
                 const newUser = await User.createUserAsync(profile.id, accessToken, refreshToken, avatarUrl);
-                console.log(avatarUrl);
                 return done(null, newUser);
             } catch (err) {
                 logger.error(err);

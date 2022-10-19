@@ -2,7 +2,7 @@ import cassandra from 'cassandra-driver';
 import CassandraStore from 'cassandra-store';
 
 const authProvider = new cassandra.auth.PlainTextAuthProvider(process.env.DB_USERNAME, process.env.DB_PASSWORD);
-var client;
+let client;
 
 const cassandraStoreOptions = {
     table: 'user_sessions',
