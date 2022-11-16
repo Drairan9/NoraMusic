@@ -273,6 +273,8 @@ main{
 
 .block-content-fold{
     padding: 0 0 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .add-song-button{
@@ -659,8 +661,17 @@ main{
 @media all and (min-width: 1024px){ 
     main{
         grid-template-columns: 50% 50%;
-        grid-template-rows: auto auto;
+        grid-template-rows: auto auto auto auto;
         width: calc(100vw - 374px);
+    }
+
+    #now-playing{
+        grid-row: 1;
+        height: fit-co;
+    }
+
+    #audio-filters{
+        grid-row: 1 / 4;
     }
 
     .now-playing-wrapper{
@@ -744,6 +755,7 @@ main{
     .audio-filters-list{
         grid-template-columns: auto;
         min-width: initial;
+        padding: 10px;
     }
 }
 
@@ -755,4 +767,39 @@ main{
     .mobile{
         display: block;
     }
+}
+
+.sidebar-list::after{
+    content: "";
+    width: 100%;
+    height: 20px;
+    background-color: rgb(21,21,22);
+    position: fixed;
+    bottom: 72px;
+    filter: blur(5px);
+}
+
+.sidebar-list::before{
+    content: "";
+    width: 100%;
+    height: 13px;
+    background-color: rgb(21,21,22);
+    position: fixed;
+    bottom: 72px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 6;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 6;
+}
+
+::-webkit-scrollbar-thumb {
+    /* background: var(--header-color); */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
 }
