@@ -39,7 +39,6 @@ export async function getLegalUserGuilds(id) {
         delete guild.permissions;
         guild.avatarUrl = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.jpg`;
     });
-
     return mutualGuilds;
 }
 

@@ -7,57 +7,170 @@
     <title>Guild</title>
     <base href="/"> 
     <link rel="stylesheet" href="Css/Guild/Dashboard.css">
+    <link rel="stylesheet" href="Css/App.css">
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
     <script src="Js/Guild/DashboardController.js" defer></script>
+    <script src="Js/Guild/WebsocketController.js" defer></script>
 </head>
 <body>
-    <nav>
-        <div class="nav-left">
-            <span class="nav-name">NoraDJ</span>
-            <span class="nav-subname">Dashboard</span>
-        </div>
-        <div class="nav-right">
-            <% if(avatarUrl) { %>
-                <div class="nav-servericon" data-name="<%- name %>">
-                    <img src="<%- avatarUrl %>" alt="Server icon">
+    <header>
+        <a href="/" class="header-text-container">
+            <span class="header-title">NoraDJ</span>
+            <span class="header-subtitle">Dashboard</span>
+        </a>
+        <nav>
+            <div class="mobile">
+                <div class="hamburger-wrapper">
+                    <button class="hamburger" onclick="hamburger()" data-status="closed">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </button>
                 </div>
-            <% } %>
-            <button class="btn btn-default">Change server</button>
-            <button class="btn btn-warning">Sign out</button>
-        </div>
-    </nav>
+            </div>
+            <div class="desktop">
+                <div class="navbar-desktop">
+                    <% if(avatarUrl) { %>
+                        <span class="side-navbar-image" style='background-image: url("<%- avatarUrl %>")' data-name="<%- name %>"></span>
+                    <% } %>
+                    <a class="navbar-link" href="/guild">Change server</a>
+                    <a class="navbar-link" href="/login/logout">Sign out</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="mobile side-navbar" data-status="closed">
+        <nav>
+            <ul class="side-navbar-list">
+                <li><a class="navbar-link" href="/guild">Change server</a></li>
+                <li><a class="navbar-link" href="/login/logout">Sign out</a></li>
+                <% if(avatarUrl) { %>
+                    <li><span class="side-navbar-image" style='background-image: url("<%- avatarUrl %>")' data-name="<%- name %>"></span></li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+
     <main>
-        <div class="main-container">
-            <div class="module">
-                <div class="module-title">Now playing:</div>
-                <div class="module-mid">                    
-                    -//-
+        <div class="block-container">
+            <!-- ADD SONG -->
+            <span class="block-title-wrapper">
+                <h4 class="block-title">Add song</h4>
+            </span>
+            <div class="block-content-wrapper">
+                <div class="add-song-input-wrapper">
+                    <ion-icon name="search-outline" class="add-song-input-icon"></ion-icon>
+                    <input type="text" placeholder="Search" class="add-song-input">
                 </div>
-                <div class="module-bottom">
-                    <button class="btn btn-default">Play</button>
-                    <button class="btn btn-default">Pause</button>
-                    <button class="btn btn-default">Skip</button>
+                <button class="add-song-button">Add</button>
+            </div>
+        </div>
+
+        <div class="block-container" id="control-panel">
+            <!-- CONTROL PANEL -->
+            <span class="block-title-wrapper">
+                <h4 class="block-title">Control panel</h4>
+            </span> 
+            <div class="block-content-wrapper control-panel-wrapper">
+                <button class="control-button"><ion-icon class="control-button-icon" name="shuffle-outline"></ion-icon></button>
+                <button class="control-button"><ion-icon class="control-button-icon" name="play-skip-back-outline"></ion-icon></button>
+                <button class="control-button control-button-big"><ion-icon class="control-button-icon control-button-big-icon" name="play-outline"></ion-icon></button>
+                <button class="control-button"><ion-icon class="control-button-icon" name="play-skip-forward-outline"></ion-icon></button>
+                <button class="control-button"><ion-icon class="control-button-icon" name="repeat-outline"></ion-icon></button>
+            </div>
+        </div>
+
+        <div class="block-container desktop-noborder">
+            <!-- AUDIO FILTERS -->
+            <span class="block-title-wrapper">
+                <h4 class="block-title">Audio filters</h4>
+                <ion-icon name="chevron-down-outline" class="block-fold-icon" onclick="foldBlock('audio-filters-content', this)"></ion-icon>
+            </span>    
+            <div class="block-content-wrapper block-content-folded" id="audio-filters-content" data-status="closed">
+                <div class="block-content-fold">
+                    <ul class="audio-filters-list"></ul>
                 </div>
             </div>
         </div>
-        <div class="module">
-            <div class="module-title">Add song or playlist</div>
-            <div class="module-mid">
-                <input type="text">
-                <button onclick="playSong();">ADD</button>
+
+        <div class="block-container" id="playlist">
+            <!-- PLAYLIST -->
+            <span class="block-title-wrapper">
+                <h4 class="block-title">Playlist</h4>
+                <ion-icon name="chevron-down-outline" class="block-fold-icon" onclick="foldBlock('playlist-content', this)"></ion-icon>
+            </span>   
+            <div class="block-content-wrapper block-content-folded" id="playlist-content" data-status="closed">
+                <div class="block-content-fold">
+                    <span class="playlist-empty" style="display: none;">Queue is empty</span>
+                    <ul class="playlist-list">
+                        <li>
+                            <div class="playlist-song-index">
+                                1
+                            </div>
+                            <div class="playlist-song-title">
+                                $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                            </div>
+                            <div class="playlist-song-controls">
+                                <ion-icon name="close-outline"></ion-icon>
+                                <ion-icon name="play-outline"></ion-icon>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="playlist-song-index">
+                                1
+                            </div>
+                            <div class="playlist-song-title">
+                                $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                            </div>
+                            <div class="playlist-song-controls">
+                                <ion-icon name="close-outline"></ion-icon>
+                                <ion-icon name="play-outline"></ion-icon>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+            <div class="playlist-control-wrapper">
+                <button class="control-button"><ion-icon class="control-button-icon" name="shuffle-outline"></ion-icon></button>
+                <button class="control-button control-button-big"><ion-icon class="control-button-icon control-button-big-icon" name="stop-outline"></ion-icon></button>
+                <button class="control-button"><ion-icon class="control-button-icon" name="repeat-outline"></ion-icon></button>
             </div>
         </div>
-        <div class="main-sidebar">
-            <div class="sidebar-title">
-                Queue
-            </div>
-            <div class="sidebar-content">
-                <ul>
-                    <li>song1</li>
-                    <li>song2</li>
-                </ul>
-            </div>
+
+        <div class="block-container desktop-noborder">
+            <!-- SUGGESTED SONGS -->
+            <span class="block-title-wrapper">
+                <h4 class="block-title">Suggested songs</h4>
+                <ion-icon name="chevron-down-outline" class="block-fold-icon" onclick="foldBlock('suggested-content', this)"></ion-icon>
+            </span>    
+            <div class="block-content-wrapper block-content-unfolded" id="suggested-content" data-status="closed">
+                <div class="block-content-fold">
+                    <ul class="suggested-list"></ul>
+                </div>
+            </div> 
         </div>
     </main>
+
+    <div class="now-playing-wrapper">
+        <div class="now-playing-wing">
+            <span class="now-playing-head pulse-anim">Now playing</span>
+            <span class="now-playing-title">
+                Nothing
+            </span>
+        </div>
+        <div class="now-playing-controls-wrapper mobile">
+            <button class="control-button"><ion-icon class="control-button-icon" name="play-skip-back-outline"></ion-icon></button>
+            <button class="control-button control-button-big"><ion-icon class="control-button-icon control-button-big-icon" name="play-outline"></ion-icon></button>
+            <button class="control-button"><ion-icon class="control-button-icon" name="play-skip-forward-outline"></ion-icon></button>
+        </div>
+    </div>
+
+    <script>document.write('<script src="http://'
+        + (location.host || 'localhost').split(':')[0]
+        + ':35729/livereload.js?snipver=1"></'
+        + 'script>')
+    </script>
 </body>
 </html>

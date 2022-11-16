@@ -1,0 +1,71 @@
+:root{
+    --background-color: #000000;
+    --text-default-color: rgba(245,245,247, 0.92);
+    --text-subtitle-color: #CCCCCC;
+    --text-title-element-color: #F5F5F7;
+    --header-color: rgba(29,29,31,0.72);
+    --border-color: rgba(255, 255, 255, 0.12);
+    --color-red: #FF4544;
+    --color-green: #30D158;
+    --color-blue: #0A84FF;
+    --color-gray: rgba(255, 255, 255, 0.24);
+    --color-darkgray: rgba(255, 255, 255, 0.20);
+    --button-background-color: #D9D9D9;
+    --input-background: #0A0A0A;
+
+    --header-height: 51px;
+}
+
+@font-face {
+    font-family: Inter-Thin;
+    font-weight: 100;
+    src: url(../Fonts/Inter-Thin.ttf);
+}
+
+@font-face {
+    font-family: Inter-ExtraLight;
+    font-weight: 200;
+    src: url(../Fonts/Inter-ExtraLight.ttf);
+}
+
+@font-face {
+    font-family: Inter-Light;
+    font-weight: 300;
+    src: url(../Fonts/Inter-Light.ttf);
+}
+
+@font-face {
+    font-family: Inter-Regular;
+    font-weight: 400;
+    src: url(../Fonts/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: Inter-Medium;
+    font-weight: 500;
+    src: url(../Fonts/Inter-Medium.ttf);
+}
+
+@font-face {
+    font-family: Inter-SemiBold;
+    font-weight: 600;
+    src: url(../Fonts/Inter-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: Inter-Bold;
+    font-weight: 700;
+    src: url(../Fonts/Inter-Bold.ttf);
+}
+
+@font-face {
+    font-family: Inter-ExtraBold;
+    font-weight: 800;
+    src: url(Fonts/Inter-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: Inter-Bold;
+    font-weight: 900;
+    src: url(Fonts/Inter-Bold.ttf);
+}

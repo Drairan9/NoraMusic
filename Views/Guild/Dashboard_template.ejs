@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild</title>
+    <base href="/"> 
+    <link rel="stylesheet" href="Css/Guild/Dashboard.css">
+    <link rel="stylesheet" href="Css/App.css">
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
+    <script src="Js/Guild/DashboardController.js" defer></script>
+    <script src="/reload/reload.js" defer></script>
+</head>
+<body>
+    <script>document.write('<script src="http://'
+        + (location.host || 'localhost').split(':')[0]
+        + ':35729/livereload.js?snipver=1"></'
+        + 'script>')
+    </script>
+
+    <header class="main-header">
+        <a href="/" class="header-text-container">
+            <span class="header-title">NoraDJ</span>
+            <span class="header-subtitle">Dashboard</span>
+        </a>
+        <nav class="header-navbar">
+            <% if(avatarUrl) { %>
+                <span class="navbar-img" style='background-image: url("<%- avatarUrl %>")' data-name="<%- name %>"></span>
+            <% } %>
+            <a href="/guild" class="navbar-text">Change server</a>
+            <a href="/login/logout" class="navbar-text logout">Sign out</a>
+        </nav>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="content-block">
+            <h4 class="element-title">Add song</h4>
+            <div class="addsong-wrapper">
+                <span class="addsong-input-body">
+                    <ion-icon name="search-outline" class="add-song-ion"></ion-icon>
+                    <input type="text" placeholder="Search" class="add-song-target-input">
+                </span>
+                <button class="add-song-button">Search</button>
+            </div>
+            <div class="control-panel-wrapper">
+                <span class="content-horizontal-line"></span>
+                <h4 class="element-title">Control panel</h4>
+                <div class="control-panel-buttons-wrapper">
+                    <button class="now-playing-button"><ion-icon class="now-playing-ion" name="play-skip-back-outline"></ion-icon></button>
+                    <button class="now-playing-button now-playing-button-main"><ion-icon class="now-playing-ion now-playing-ion-main" name="play-outline"></ion-icon></button>
+                    <button class="now-playing-button"><ion-icon class="now-playing-ion" name="play-skip-forward-outline"></ion-icon></button>
+                    
+                    <button class="sidebar-control-button"><ion-icon class="sidebar-control-button-ion" name="shuffle-outline"></ion-icon></button>
+                    <button class="sidebar-control-button control-stop"><ion-icon class="sidebar-control-button-ion control-stop-ion" name="stop-outline"></ion-icon></button>
+                    <button class="sidebar-control-button"><ion-icon class="sidebar-control-button-ion" name="repeat-outline"></ion-icon></button>
+                </div>
+            </div>
+            <span class="content-horizontal-line"></span>
+            <h4 class="element-title">Audio filters</h4>
+            <div class="audio-filters-wrapper">
+                <ul class="audio-filters-list">
+                    <li class="audio-filter-node">
+                        vaporwave   
+                        <input type="checkbox" class="audio-filter-checkbox">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-block" style="margin-left: 137px;">
+            <h4 class="element-title">Suggested songs</h4>
+            <div class="suggested-songs-wrapper">
+                <ul class="suggested-songs-list">
+                    <li class="suggested-song">
+                        <span class="suggested-song-thumbnail">
+                            <span class="suggested-song-timestamp">3:19</span>
+                        </span>
+                        <span class="suggested-song-title">
+                            This amazing video has the longest title in all of youtube I think!It is 100 characters long!!!!!!!!
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-wrapper">
+        <div class="sidebar-container">
+            <h4 class="element-title">Playlist</h4>
+            <ul class="sidebar-list">
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        1
+                    </div>
+                    <div class="sidebar-list-text">
+                        $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        1
+                    </div>
+                    <div class="sidebar-list-text">
+                        $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        1
+                    </div>
+                    <div class="sidebar-list-text">
+                        $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        1
+                    </div>
+                    <div class="sidebar-list-text">
+                        $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        1
+                    </div>
+                    <div class="sidebar-list-text">
+                        $UICIDEBOY$ x BONES x Shahmen - Night Mafia II
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+                <li class="sidebar-list-element">
+                    <div class="sidebar-list-index">
+                        2
+                    </div>
+                    <div class="sidebar-list-text">
+                        DON XHONI - TRUST ME
+                    </div>
+                    <div class="sidebar-list-control">
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="close-outline"></ion-icon></button>
+                        <button class="sidebar-list-button"><ion-icon class="sidebar-list-ion" name="play-outline"></ion-icon></button>
+                    </div>
+                </li>
+            </ul>
+            <div class="sidebar-control-wrapper">
+                <div class="sidebar-button-wrapper">
+                    <button class="sidebar-control-button"><ion-icon class="sidebar-control-button-ion" name="shuffle-outline"></ion-icon></button>
+                    <button class="sidebar-control-button control-stop"><ion-icon class="sidebar-control-button-ion control-stop-ion" name="stop-outline"></ion-icon></button>
+                    <button class="sidebar-control-button"><ion-icon class="sidebar-control-button-ion" name="repeat-outline"></ion-icon></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="now-playing">
+        <span class="now-playing-text-wrapper">
+            <h4 class="now-playing-text">Now playing</h4>
+            <span class="now-playing-title">This amazing video has the longest title in all of youtube I think!It is 100 characters long!!!!!!!!</span>
+        </span>
+        <div class="now-playing-button-wrapper">
+            <button class="now-playing-button"><ion-icon class="now-playing-ion" name="play-skip-back-outline"></ion-icon></button>
+            <button class="now-playing-button now-playing-button-main"><ion-icon class="now-playing-ion now-playing-ion-main" name="play-outline"></ion-icon></button>
+            <button class="now-playing-button"><ion-icon class="now-playing-ion" name="play-skip-forward-outline"></ion-icon></button>
+        </div>
+    </div>
+</body>
+</html>
