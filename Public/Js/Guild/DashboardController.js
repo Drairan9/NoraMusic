@@ -94,14 +94,17 @@ function createSuggestedSong(thumbnailUrl, title, time) {
     document.querySelector('.suggested-list').appendChild(li);
 }
 
-createSongInPlaylist('0', 'Song title');
+function clearPlaylist() {
+    document.querySelector('.playlist-list').innerHTML = '';
+    console.log('clearing');
+}
 
 function createSongInPlaylist(index, title) {
     let li = document.createElement('li');
 
     let indexDiv = document.createElement('div');
     indexDiv.classList.add('playlist-song-index');
-    indexDiv.textContent = index;
+    indexDiv.textContent = index + 1;
     li.appendChild(indexDiv);
 
     let titleDiv = document.createElement('div');

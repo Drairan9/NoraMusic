@@ -6,7 +6,9 @@ import logger from '#Utils/Logger.js';
 let io;
 
 export default function createSocket(server) {
-    io = new Server(server);
+    io = new Server(server, {
+        maxHttpBufferSize: 2e6, // 4Mb
+    });
 
     io.on('connection', (socket) => {
         socket.on('server-hello', async (callback) => {
@@ -94,8 +96,24 @@ export default function createSocket(server) {
             socket.to(arg).timeout(1000).emit('queue-connection-update');
         });
 
-        socket.on('bot-now-playing', (arg) => {
-            socket.to(arg.guildId).timeout(1000).emit('now-playing', `${arg.title.title} by ${arg.title.author}`);
+        socket.on('bot-new-track', (arg) => {
+            socket
+                .to(arg.guildId)
+                .timeout(1000)
+                .emit('new-track', { title: `${arg.title.title} by ${arg.title.author}`, queue: arg.queue });
         });
     });
 }
+
+/**
+ * TODO: Add communication
+ *  STOP
+ *  repeat
+ *  shuffle
+ *  play/pause
+ *  go back
+ *  skip
+ *  jump to song
+ *  remove from queue
+ *
+ */

@@ -275,6 +275,7 @@ main{
     padding: 0 0 20px 0;
     overflow-y: auto;
     overflow-x: hidden;
+    scroll-snap-type: y mandatory;
 }
 
 .add-song-button{
@@ -465,6 +466,8 @@ main{
     flex-direction: row;
     height: 66px;
     width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
 }
 
 .playlist-song-index{
@@ -485,7 +488,6 @@ main{
     font-size: 15px;
     display: flex;
     align-items: center;
-    overflow: hidden;
     width: calc(100% - 29px - 66px);
     padding-left: 10px;
 }
@@ -588,6 +590,7 @@ main{
     border-radius: 12px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .now-playing-head{

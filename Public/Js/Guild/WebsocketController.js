@@ -13,19 +13,44 @@ socket.on('connect', () => {
                 createAudioFilter(filter.filter, filter.state);
             });
             nowPlaying(response.payload.nowPlaying ? response.payload.nowPlaying : 'Nothing');
+
+            if (response.payload.queue) {
+                response.payload.queue.forEach((track, index) => {
+                    createSongInPlaylist(index, track.title);
+                });
+                createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
+            }
         });
     });
 });
 
 socket.on('filters-update', (res) => updateFilters(res));
 
-socket.on('now-playing', (res) => nowPlaying(res ? res : 'Nothing'));
+socket.on('new-track', (res) => {
+    nowPlaying(res.title ? res.title : 'Nothing');
+    clearPlaylist();
+    console.log(res.queue.length);
+    res.queue.forEach((track, index) => {
+        createSongInPlaylist(index, track.title);
+    });
+    createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
+});
 
 socket.on('queue-connection-update', () => {
     console.log('Need to update dashboard info!');
     socket.emit('fetch-all-data', (response) => {
+        console.log(response.payload);
         updateFilters(response.payload.filters);
         nowPlaying(response.payload.nowPlaying ? response.payload.nowPlaying : 'Nothing');
+        clearPlaylist();
+        if (response.payload.queue) {
+            response.payload.queue.forEach((track, index) => {
+                createSongInPlaylist(index, track.title);
+            });
+            createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
+        } else {
+            console.log('no queue err');
+        }
     });
 });
 
