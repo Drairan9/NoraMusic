@@ -90,3 +90,16 @@ function updateFilters(array) {
         }
     });
 }
+
+document.querySelectorAll(`[data-action]`).forEach((button) => {
+    button.addEventListener('click', () => {
+        if (!['play-pause', 'pervious-song', 'next-song'].includes(button.dataset.action)) {
+            return console.log('Unknown option.');
+        }
+
+        socket.emit('control-song', { option: button.dataset.action }, (response) => {
+            if (!response.isSuccess) return console.log(response.errorMessage);
+            console.log(`${response.isPaused ? 'Paused' : 'Resumed'} song.`);
+        });
+    });
+});

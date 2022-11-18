@@ -102,18 +102,120 @@ export default function createSocket(server) {
                 .timeout(1000)
                 .emit('new-track', { title: `${arg.title.title} by ${arg.title.author}`, queue: arg.queue });
         });
+
+        socket.on('control-song', async (arg, callback) => {
+            if (!['play-pause', 'pervious-song', 'next-song'].includes(arg.option)) {
+                return callback({ isSuccess: false, error: true, errorMessage: 'Unknown option.' });
+            }
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            socket
+                .to(process.env.CLIENT_ID)
+                .timeout(1000)
+                .emit('bot-control-song', { guildId: userData.url, option: arg.option }, (err, res) => {
+                    if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+                    callback(res[0]);
+                });
+        });
+
+        // socket.on('stop-playing', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-stop-playing', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('repeat-song', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-repeat-song', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('shuffle-queue', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-shuffle-queue', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('play-pause', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-play-pause', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('previous-song', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-previous-song', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('next-song', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-next-song', { guildId: userData.url }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('jump-to-song', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-jump-to-song', { guildId: userData.url, songId: arg.songId }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
+
+        // socket.on('remove-song', async (arg, callback) => {
+        //     let userData = await readSocketHandshake(socket.handshake.headers);
+        //     socket
+        //         .to(process.env.CLIENT_ID)
+        //         .timeout(1000)
+        //         .emit('bot-remove-song', { guildId: userData.url, songId: arg.songId }, (err, res) => {
+        //             if (err) return callback({ isSuccess: false, error: true, errorMessage: 'Timeout error from bot' });
+        //             callback(res[0]);
+        //         });
+        // });
     });
 }
 
 /**
  * TODO: Add communication
- *  STOP
- *  repeat
- *  shuffle
- *  play/pause
- *  go back
- *  skip
- *  jump to song
- *  remove from queue
+ *  STOP  -- 50% done
+ *  repeat -- 50% done
+ *  shuffle -- 50% done
+ *  play/pause -- 50% done
+ *  previous song -- 50% done
+ *  next song -- 50% done
+ *  jump to song -- 50% done
+ *  remove from queue -- 50% done
  *
  */
