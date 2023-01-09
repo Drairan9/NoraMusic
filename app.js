@@ -5,6 +5,7 @@ import { cassandraStore } from '#Database/Index.js';
 import passport from 'passport';
 import logger from '#Logger';
 import * as discordStrategy from '#Strategies/discord.js';
+import * as discordBot from './Discord/Index.js';
 import createSocket from './Socket/Index.js';
 
 import indexRouter from '#Root/Routes/Index.js';

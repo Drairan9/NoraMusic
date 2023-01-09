@@ -33,7 +33,7 @@ socket.on('new-track', (res) => {
     res.queue.forEach((track, index) => {
         createSongInPlaylist(index, track.title);
     });
-    createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
+    //createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
 });
 
 socket.on('queue-connection-update', () => {
