@@ -6,100 +6,29 @@ socket.on('connect', () => {
     socket.emit('server-hello', (response) => {
         if (response.error) return console.log('Server declined connection. Error: ' + response.errorMessage);
         console.log('Connected');
-        socket.emit('fetch-all-data', (response) => {
-            console.log(response);
-            if (!response.payload.botQueue) console.log('Bot is not in voice channel');
-            response.payload.filters.forEach((filter) => {
-                createAudioFilter(filter.filter, filter.state);
-            });
-            nowPlaying(response.payload.nowPlaying ? response.payload.nowPlaying : 'Nothing');
+        if (!response.payload) return console.log('Bot is not connected to voice channel.');
+        nowPlaying(response.payload.nowPlaying);
 
-            if (response.payload.queue) {
-                response.payload.queue.forEach((track, index) => {
-                    createSongInPlaylist(index, track.title);
-                });
-                createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
-            }
-        });
-    });
-});
-
-socket.on('filters-update', (res) => updateFilters(res));
-
-socket.on('new-track', (res) => {
-    nowPlaying(res.title ? res.title : 'Nothing');
-    clearPlaylist();
-    console.log(res.queue.length);
-    res.queue.forEach((track, index) => {
-        createSongInPlaylist(index, track.title);
-    });
-    //createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
-});
-
-socket.on('queue-connection-update', () => {
-    console.log('Need to update dashboard info!');
-    socket.emit('fetch-all-data', (response) => {
-        console.log(response.payload);
-        updateFilters(response.payload.filters);
-        nowPlaying(response.payload.nowPlaying ? response.payload.nowPlaying : 'Nothing');
         clearPlaylist();
-        if (response.payload.queue) {
-            response.payload.queue.forEach((track, index) => {
-                createSongInPlaylist(index, track.title);
-            });
-            createSongInPlaylist(response.payload.queue.length, `Total: ${response.payload.queueLength}`);
-        } else {
-            console.log('no queue err');
-        }
+        let i = 0;
+        response.payload.queueList.forEach((track) => {
+            createSongInPlaylist(i, track.title);
+            i++;
+        });
     });
 });
 
-function controlFilter(name, state) {
-    if (state === null) return;
+socket.on('now-playing', (trackName) => {
+    console.log(trackName);
+    nowPlaying(trackName.title);
+});
 
-    state
-        ? socket.emit('enable-filter', name, (response) => {
-              if (!response.isSuccess) {
-                  console.log(response.errorMessage);
-                  document.querySelector(`[data-filter-id='${name}']`).checked = false;
-              }
-          })
-        : socket.emit('disable-filter', name, (response) => {
-              if (!response.isSuccess) {
-                  console.log(response.errorMessage);
-                  document.querySelector(`[data-filter-id='${name}']`).checked = false;
-              }
-          });
-}
-
-function updateFilters(array) {
-    array.forEach((filter) => {
-        let filterElem = document.querySelector(`[data-filter-id='${filter.filter}']`);
-        if (!filterElem) return;
-
-        filterElem.checked = filter.state;
-
-        if (filter.state === null) {
-            if (!filterElem.classList.contains('filter-checkbox-inactive')) {
-                filterElem.classList.add('filter-checkbox-inactive');
-            }
-        } else {
-            if (filterElem.classList.contains('filter-checkbox-inactive')) {
-                filterElem.classList.remove('filter-checkbox-inactive');
-            }
-        }
-    });
-}
-
-document.querySelectorAll(`[data-action]`).forEach((button) => {
-    button.addEventListener('click', () => {
-        if (!['play-pause', 'pervious-song', 'next-song'].includes(button.dataset.action)) {
-            return console.log('Unknown option.');
-        }
-
-        socket.emit('control-song', { option: button.dataset.action }, (response) => {
-            if (!response.isSuccess) return console.log(response.errorMessage);
-            console.log(`${response.isPaused ? 'Paused' : 'Resumed'} song.`);
-        });
+socket.on('queue-update', (trackList) => {
+    console.log(trackList);
+    clearPlaylist();
+    let i = 0;
+    trackList.forEach((track) => {
+        createSongInPlaylist(i, track.title);
+        i++;
     });
 });

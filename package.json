@@ -17,12 +17,15 @@
     "#Controllers/*": "./Controllers/*",
     "#Routes/*": "./Routes/*",
     "#Utils/*": "./Utils/*",
-    "#Services/*": "./Services/*"
+    "#Services/*": "./Services/*",
+    "#Discord/*": "./Discord/*",
+    "#Socket": "./Socket/Index.js"
   },
   "author": "Drairan9",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
+    "@discordjs/voice": "^0.14.0",
     "axios": "^1.1.2",
     "cassandra-driver": "^4.6.4",
     "cassandra-store": "^5.0.0",

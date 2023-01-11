@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { Player } from 'discord-player';
 import logger from '#Logger';
 import fs from 'fs';
+import { registerPlayerEvents } from '#Discord/Events.js';
 
 const commandFiles = fs.readdirSync('./Discord/Commands').filter((file) => file.endsWith('.js'));
 let commands = [];
@@ -13,7 +14,7 @@ let commands = [];
     }
 })();
 
-const client = new Client({
+export const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates],
 });
 
@@ -40,6 +41,7 @@ client.on('ready', () => {
             logger.error(err);
         }
     });
+    registerPlayerEvents(client.player);
 });
 
 client.on('interactionCreate', async (interaction) => {
