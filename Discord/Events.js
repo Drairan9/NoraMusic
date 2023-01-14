@@ -1,7 +1,9 @@
+import filterActions from '#Discord/Actions/FilterActions.js';
 import { emitClient } from '#Socket';
 
 export const registerPlayerEvents = (player) => {
     player.on('connectionCreate', (queue, connection) => {
+        emitClient.filtersUpdate(queue.guild.id, filterActions.getQueueFilters(player.client, queue.guild.id));
         console.log('Connection created!');
     });
 
@@ -17,6 +19,8 @@ export const registerPlayerEvents = (player) => {
 
     player.on('queueEnd', (queue, connection) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
+        emitClient.nowPlaying(queue.guild.id, null);
+        emitClient.filtersUpdate(queue.guild.id, filterActions.getQueueFilters(player.client, queue.guild.id));
         console.log('End of queue!');
     });
 

@@ -128,5 +128,6 @@ function createSongInPlaylist(index, title) {
 }
 
 function nowPlaying(title) {
+    if (!title) title = 'Nothing';
     document.querySelector('.now-playing-title').textContent = title;
 }

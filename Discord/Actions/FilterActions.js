@@ -47,7 +47,7 @@ export default class filterActions {
                 return acc;
             }, {})
         );
-        return { isSuccess: true, errorMessage: '', payload: '' };
+        return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
     }
 
     /**
@@ -61,14 +61,15 @@ export default class filterActions {
 
         let queue = client.player.createQueue(guildId);
         let enabledFilters = queue.getFiltersEnabled();
-        if (!enabledFilters.includes(filter)) return { isSuccess: true, errorMessage: '', payload: '' };
+        if (!enabledFilters.includes(filter))
+            return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
 
         let index = enabledFilters.indexOf(filter);
 
         if (index > -1) enabledFilters.splice(index, 1);
         if (enabledFilters.length === 0) {
             queue.setFilters({ filter: false });
-            return { isSuccess: true, errorMessage: '', payload: '' };
+            return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
         }
 
         await queue.setFilters(
@@ -77,6 +78,6 @@ export default class filterActions {
                 return acc;
             }, {})
         );
-        return { isSuccess: true, errorMessage: '', payload: '' };
+        return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
     }
 }
