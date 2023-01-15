@@ -8,9 +8,9 @@ export const registerPlayerEvents = (player) => {
     });
 
     player.on('botDisconnect', (queue, connection) => {
+        console.log('Bot disconnected!');
         emitClient.nowPlaying(queue.guild.id, null);
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
-        console.log('Bot disconnected!');
     });
 
     player.on('connectionError', (queue, connection) => {

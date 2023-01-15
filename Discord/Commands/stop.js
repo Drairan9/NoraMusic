@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { getVoiceConnection } from '@discordjs/voice';
+import { getVoiceConnection, joinVoiceChannel } from '@discordjs/voice';
 
 export const data = {
     data: new SlashCommandBuilder().setName('stop').setDescription('Leave voice channel'),
@@ -11,7 +11,15 @@ export const data = {
         }
 
         const queue = client.player.getQueue(interaction.guild.id);
-        queue.destroy();
+        if (!queue || !queue.playing) {
+            interaction.reply('no playing');
+            return;
+        }
+
+        const connection = getVoiceConnection(interaction.guild.id);
+
+        if (connection) connection.destroy();
+        if (queue) queue.destroy();
 
         interaction.reply('xd');
     },

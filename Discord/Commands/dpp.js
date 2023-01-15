@@ -3,18 +3,13 @@ import { QueryType } from 'discord-player';
 import { getVoiceConnection, joinVoiceChannel } from '@discordjs/voice';
 
 export const data = {
-    data: new SlashCommandBuilder()
-        .setName('play')
-        .setDescription('Play song')
-        .addStringOption((option) => option.setName('url').setDescription("the song's url").setRequired(true)),
+    data: new SlashCommandBuilder().setName('dpp').setDescription('dev play playlist'),
 
     run: async ({ client, interaction }) => {
         if (interaction.member.voice.channelId === null) {
             interaction.reply('NO VC');
             return;
         }
-
-        let url = interaction.options.getString('url');
 
         await interaction.reply('Thinking..');
 
@@ -31,10 +26,13 @@ export const data = {
             queue.connect(interaction.member.voice.channel);
         }
 
-        const result = await client.player.search(url, {
-            requestedBy: interaction.user,
-            searchEngine: QueryType.AUTO,
-        });
+        const result = await client.player.search(
+            'https://www.youtube.com/playlist?list=PL2TRsgSGFUWp4BfAs4fi6tUvBs-6yxrWK',
+            {
+                requestedBy: interaction.user,
+                searchEngine: QueryType.AUTO,
+            }
+        );
         if (result.tracks.length === 0) return interaction.editReply('No results');
 
         // const song = result.tracks[0];

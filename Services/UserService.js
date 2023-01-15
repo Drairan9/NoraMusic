@@ -78,7 +78,6 @@ export async function getLegalUserGuilds(id) {
     if (!userGuilds || !botGuilds) {
         return {};
     }
-
     var mutualGuilds = userGuilds.filter((guild) => botGuilds.some((botGuild) => botGuild.id === guild.id));
 
     mutualGuilds.forEach((guild) => {
