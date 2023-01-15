@@ -4,7 +4,7 @@ console.log('Connecting...');
 
 socket.on('connect', () => {
     socket.emit('server-hello', (response) => {
-        if (response.error) return console.log('Server declined connection. Error: ' + response.errorMessage);
+        if (!response.isSuccess) return console.log('Server declined connection. Error: ' + response.errorMessage);
         console.log('Connected');
         if (!response.payload.queue) console.log('Bot is not connected to voice channel.');
         if (response.payload.nowPlaying) nowPlaying(response.payload.nowPlaying);

@@ -16,16 +16,16 @@ export default function createSocket(server, client) {
         socket.on('server-hello', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
             // Make sure that user is connecting with allowed guild
-            // let legalGuilds = await isInGuild(userData.discord_id, userData.url);
-            // if (legalGuilds.length <= 0) {
-            //     try {
-            //         callback({ isSuccess: false, errorMessage: 'Illegal guild', payload: '' });
-            //         return socket.disconnect(0);
-            //     } catch (err) {
-            //         logger.error(err);
-            //         socket.disconnect(0);
-            //     }
-            // }
+            let legalGuilds = await isInGuild(userData.discord_id, userData.url);
+            if (legalGuilds.length <= 0) {
+                try {
+                    callback({ isSuccess: false, errorMessage: 'Illegal guild', payload: '' });
+                    return socket.disconnect(0);
+                } catch (err) {
+                    logger.error(err);
+                    socket.disconnect(0);
+                }
+            }
             // Clear rooms
             socket.rooms.forEach((room) => {
                 socket.leave(room);
