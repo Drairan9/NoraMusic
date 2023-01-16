@@ -26,4 +26,22 @@ router.get(
     }
 );
 
+// All logic is in ./Strategies/spotify.js
+router.get(
+    '/auth/spotify',
+    passport.authenticate('spotify', {
+        failureRedirect: '/',
+    })
+);
+
+router.get(
+    '/auth/spotify/redirect',
+    passport.authenticate('spotify', {
+        failureRedirect: '/login',
+    }),
+    function (req, res) {
+        res.redirect('/login'); // Successful auth
+    }
+);
+
 export default router;

@@ -1,5 +1,7 @@
 export const DISCORD_API_URL = 'https://discord.com/api/v9';
 
+export const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
+
 export const FILTERS = [
     'bassboost_low',
     'bassboost',
