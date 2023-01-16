@@ -29,6 +29,7 @@ router.get(
 // All logic is in ./Strategies/spotify.js
 router.get(
     '/auth/spotify',
+    isAuthenticated,
     passport.authenticate('spotify', {
         failureRedirect: '/',
     })
@@ -36,6 +37,7 @@ router.get(
 
 router.get(
     '/auth/spotify/redirect',
+    isAuthenticated,
     passport.authenticate('spotify', {
         failureRedirect: '/login',
     }),

@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy } from 'passport-spotify';
+import SpotifyUser from '#Models/SpotifyUserModel.js';
 
 passport.use(
     new Strategy(
@@ -7,12 +8,28 @@ passport.use(
             clientID: process.env.SPOTIFY_CLIENT_ID,
             clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
             callbackURL: 'http://localhost:3000/login/auth/spotify/redirect',
+            passReqToCallback: true,
         },
-        async (accessToken, refreshToken, profile, done) => {
-            console.log(accessToken);
-            console.log(refreshToken);
-            console.log(profile);
-            done();
+        async (req, accessToken, refreshToken, profile, done) => {
+            try {
+                const existingUser = await SpotifyUser.findOneAndUpdate(
+                    req.user.discord_id,
+                    accessToken,
+                    refreshToken,
+                    profile.id
+                );
+                if (existingUser) return done(null, existingUser);
+                const newUser = await SpotifyUser.createUserAsync(
+                    req.user.discord_id,
+                    accessToken,
+                    refreshToken,
+                    profile.id
+                );
+                return done(null, newUser);
+            } catch (err) {
+                logger.error(err);
+                return done(err, undefined);
+            }
         }
     )
 );
