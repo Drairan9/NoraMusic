@@ -62,4 +62,18 @@ export default class SpotifyUser {
             });
         });
     }
+
+    static async updateAccessToken(discordId, accessToken) {
+        return new Promise(async (resolve, reject) => {
+            const query = 'UPDATE spotify_users SET access_token = ? WHERE discord_id = ? IF EXISTS';
+            const params = [accessToken, discordId];
+            await cassandra.execute(query, params, { prepare: true }, (err, res) => {
+                if (err) reject(err);
+                if (res.rows[0]['[applied]']) {
+                    resolve(true);
+                }
+                reject(false);
+            });
+        });
+    }
 }
