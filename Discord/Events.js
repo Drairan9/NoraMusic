@@ -26,6 +26,7 @@ export const registerPlayerEvents = (player) => {
 
     player.on('trackAdd', (queue, track) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
+        console.log(queue.tracks);
         console.log(`Added track ${track}`);
     });
 

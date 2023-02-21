@@ -131,3 +131,159 @@ export class emitClient {
         io.in(guildId).emit('loop-update', mode);
     }
 }
+
+setInterval(() => {
+    io.in('971477729520263198').emit('now-playing', 'Test track');
+
+    io.in('971477729520263198').emit('queue-update', [
+        {
+            id: '1076675246834061313',
+            title: 'Gzuz & Bonez - Sturkopf (mit ner Glock)',
+            author: 'CrhymeTV',
+            url: 'https://www.youtube.com/watch?v=k64IMRA2oAE',
+            thumbnail: 'https://i.ytimg.com/vi_webp/k64IMRA2oAE/maxresdefault.webp',
+            duration: '03:39',
+            durationMS: 219000,
+            views: 1454184,
+            requestedBy: '359775787693506571',
+            playlist: null,
+        },
+    ]);
+
+    io.in('971477729520263198').emit('filter-update', {
+        filters: [
+            {
+                filter: 'bassboost_low',
+                state: false,
+            },
+            {
+                filter: 'bassboost',
+                state: false,
+            },
+            {
+                filter: 'bassboost_high',
+                state: false,
+            },
+            {
+                filter: '8D',
+                state: false,
+            },
+            {
+                filter: 'vaporwave',
+                state: false,
+            },
+            {
+                filter: 'nightcore',
+                state: false,
+            },
+            {
+                filter: 'phaser',
+                state: false,
+            },
+            {
+                filter: 'tremolo',
+                state: false,
+            },
+            {
+                filter: 'vibrato',
+                state: false,
+            },
+            {
+                filter: 'reverse',
+                state: false,
+            },
+            {
+                filter: 'treble',
+                state: false,
+            },
+            {
+                filter: 'normalizer',
+                state: false,
+            },
+            {
+                filter: 'normalizer2',
+                state: false,
+            },
+            {
+                filter: 'surrounding',
+                state: false,
+            },
+            {
+                filter: 'pulsator',
+                state: false,
+            },
+            {
+                filter: 'subboost',
+                state: false,
+            },
+            {
+                filter: 'karaoke',
+                state: false,
+            },
+            {
+                filter: 'flanger',
+                state: false,
+            },
+            {
+                filter: 'gate',
+                state: false,
+            },
+            {
+                filter: 'haas',
+                state: false,
+            },
+            {
+                filter: 'mcompand',
+                state: false,
+            },
+            {
+                filter: 'mono',
+                state: false,
+            },
+            {
+                filter: 'mstlr',
+                state: false,
+            },
+            {
+                filter: 'mstrr',
+                state: false,
+            },
+            {
+                filter: 'compressor',
+                state: false,
+            },
+            {
+                filter: 'expander',
+                state: false,
+            },
+            {
+                filter: 'softlimiter',
+                state: false,
+            },
+            {
+                filter: 'chorus',
+                state: false,
+            },
+            {
+                filter: 'chorus2d',
+                state: false,
+            },
+            {
+                filter: 'chorus3d',
+                state: false,
+            },
+            {
+                filter: 'fadein',
+                state: false,
+            },
+            {
+                filter: 'dim',
+                state: false,
+            },
+            {
+                filter: 'earrape',
+                state: false,
+            },
+        ],
+    });
+}, 1000);

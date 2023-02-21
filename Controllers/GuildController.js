@@ -18,10 +18,20 @@ export async function dashboard(req, res) {
     try {
         let savedGuilds = req.session.guilds.filter((guild) => guild.id === req.params.serverid);
         if (savedGuilds.length <= 0) return res.status(400).send('No guild');
-        let spotify = await getUserRecommendations(req.user.discord_id).catch((err) => console.log(err));
-        console.log(_deconstructSpotifyTracks(spotify.tracks));
+        let spotify;
+        //TODO: Spaghettii
+        await getUserRecommendations(req.user.discord_id)
+            .then((result) => (spotify = result))
+            .catch((err) => (spotify = false));
 
-        res.render('Guild/Dashboard', { name: savedGuilds[0].name, avatarUrl: savedGuilds[0].avatarUrl });
+        if (spotify)
+            spotify = Buffer.from(JSON.stringify(_deconstructSpotifyTracks(spotify.tracks)).toString('base64'));
+
+        res.render('Guild/Dashboard', {
+            name: savedGuilds[0].name,
+            avatarUrl: savedGuilds[0].avatarUrl,
+            spotifyTracks: spotify,
+        });
     } catch (err) {
         logger.error(err);
         res.status(400).send('Error'); // TODO: Better error handling (Error page)

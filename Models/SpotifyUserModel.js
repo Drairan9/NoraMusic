@@ -52,7 +52,8 @@ export default class SpotifyUser {
             const params = [discordId];
             await cassandra.execute(query, params, { prepare: true }, (err, res) => {
                 if (err) reject(err);
-                if (res.rowLength <= 0) resolve(false);
+                //TODO: Check this return
+                if (res.rowLength <= 0) return resolve(false);
                 resolve({
                     discord_id: discordId,
                     access_token: res.rows[0].access_token,

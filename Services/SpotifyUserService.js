@@ -4,14 +4,14 @@ import { SPOTIFY_API_URL } from '#Utils/Constants.js';
 import User from '#Models/UserModel.js';
 import SpotifyUser from '#Models/SpotifyUserModel.js';
 
-export async function getUserRecommendations(discordId, retries = 0) {
+export async function getUserRecommendations(discordId, retries = 3) {
     const user = await User.findById(discordId);
-    if (!user) throw new Error('No user found');
+    if (!user) reject('No user found');
 
     return new Promise(async (resolve, reject) => {
         async function makeCall() {
             const spotifyUser = await SpotifyUser.findById(discordId);
-            if (!user) throw new Error('No linked spotify account');
+            if (!spotifyUser) return reject('No linked spotify account');
             await axios
                 .get(`${SPOTIFY_API_URL}/recommendations?limit=10&seed_genres=hip-hop`, {
                     headers: { Authorization: `Bearer ${spotifyUser.access_token}` },
@@ -30,16 +30,17 @@ export async function getUserRecommendations(discordId, retries = 0) {
                         }
                         if (err.response.status === 401) {
                             // Request new access token
-                            await requestAccessToken(discordId, spotifyUser.refresh_token).catch(
+                            let reqres = await requestAccessToken(discordId, spotifyUser.refresh_token).catch(
                                 reject('API refreshing token failed')
                             );
+                            console.log(reqres);
                             makeCall();
                         } else {
                             retries--;
                             makeCall();
                         }
                     } else {
-                        reject('API request failed.');
+                        reject(`API request failed. with code ${err.response.status}`);
                     }
                 });
         }
