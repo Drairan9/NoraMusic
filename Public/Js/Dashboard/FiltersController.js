@@ -20,6 +20,11 @@ function createFilter(name, state) {
     mainList.appendChild(li);
 }
 
+function clearFilters() {
+    const mainList = document.querySelector('.filters-list');
+    mainList.innerHTML = '';
+}
+
 function updateFiltersState(filtersArray) {
     filtersArray.forEach((filter) => {});
 }

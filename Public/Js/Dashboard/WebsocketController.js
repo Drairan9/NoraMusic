@@ -19,6 +19,7 @@ socket.on('connect', () => {
         }
 
         if (response.payload.filters) {
+            clearFilters();
             response.payload.filters.forEach((filter) => {
                 createFilter(filter.filter, filter.state);
             });
@@ -27,6 +28,7 @@ socket.on('connect', () => {
 
         if (response.payload.nowPlaying) {
             setNowPlaying(response.payload.nowPlaying);
+            console.log(response.payload.nowPlaying);
         }
 
         if (response.payload.queueList) {
@@ -39,8 +41,9 @@ socket.on('connect', () => {
 });
 
 socket.on('now-playing', (trackName) => {
+    if (trackName === null) setNowPlaying('');
+
     setNowPlaying(trackName.title);
-    console.log(trackName);
 });
 
 socket.on('queue-update', (trackList) => {

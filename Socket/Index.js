@@ -132,8 +132,10 @@ export class emitClient {
     }
 }
 
+// Dummy for dev
+
 // setInterval(() => {
-//     io.in('971477729520263198').emit('now-playing', 'Test track');
+//     io.in('971477729520263198').emit('now-playing', { title: 'Test track!' });
 
 //     io.in('971477729520263198').emit('queue-update', [
 //         {
@@ -150,140 +152,138 @@ export class emitClient {
 //         },
 //     ]);
 
-//     io.in('971477729520263198').emit('filter-update', {
-//         filters: [
-//             {
-//                 filter: 'bassboost_low',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'bassboost',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'bassboost_high',
-//                 state: false,
-//             },
-//             {
-//                 filter: '8D',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'vaporwave',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'nightcore',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'phaser',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'tremolo',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'vibrato',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'reverse',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'treble',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'normalizer',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'normalizer2',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'surrounding',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'pulsator',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'subboost',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'karaoke',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'flanger',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'gate',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'haas',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'mcompand',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'mono',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'mstlr',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'mstrr',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'compressor',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'expander',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'softlimiter',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'chorus',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'chorus2d',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'chorus3d',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'fadein',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'dim',
-//                 state: false,
-//             },
-//             {
-//                 filter: 'earrape',
-//                 state: false,
-//             },
-//         ],
-//     });
+//     io.in('971477729520263198').emit('filter-update', [
+//         {
+//             filter: 'bassboost_low',
+//             state: false,
+//         },
+//         {
+//             filter: 'bassboost',
+//             state: false,
+//         },
+//         {
+//             filter: 'bassboost_high',
+//             state: false,
+//         },
+//         {
+//             filter: '8D',
+//             state: false,
+//         },
+//         {
+//             filter: 'vaporwave',
+//             state: false,
+//         },
+//         {
+//             filter: 'nightcore',
+//             state: false,
+//         },
+//         {
+//             filter: 'phaser',
+//             state: false,
+//         },
+//         {
+//             filter: 'tremolo',
+//             state: false,
+//         },
+//         {
+//             filter: 'vibrato',
+//             state: false,
+//         },
+//         {
+//             filter: 'reverse',
+//             state: false,
+//         },
+//         {
+//             filter: 'treble',
+//             state: false,
+//         },
+//         {
+//             filter: 'normalizer',
+//             state: false,
+//         },
+//         {
+//             filter: 'normalizer2',
+//             state: false,
+//         },
+//         {
+//             filter: 'surrounding',
+//             state: false,
+//         },
+//         {
+//             filter: 'pulsator',
+//             state: false,
+//         },
+//         {
+//             filter: 'subboost',
+//             state: false,
+//         },
+//         {
+//             filter: 'karaoke',
+//             state: false,
+//         },
+//         {
+//             filter: 'flanger',
+//             state: false,
+//         },
+//         {
+//             filter: 'gate',
+//             state: false,
+//         },
+//         {
+//             filter: 'haas',
+//             state: false,
+//         },
+//         {
+//             filter: 'mcompand',
+//             state: false,
+//         },
+//         {
+//             filter: 'mono',
+//             state: false,
+//         },
+//         {
+//             filter: 'mstlr',
+//             state: false,
+//         },
+//         {
+//             filter: 'mstrr',
+//             state: false,
+//         },
+//         {
+//             filter: 'compressor',
+//             state: false,
+//         },
+//         {
+//             filter: 'expander',
+//             state: false,
+//         },
+//         {
+//             filter: 'softlimiter',
+//             state: false,
+//         },
+//         {
+//             filter: 'chorus',
+//             state: false,
+//         },
+//         {
+//             filter: 'chorus2d',
+//             state: false,
+//         },
+//         {
+//             filter: 'chorus3d',
+//             state: false,
+//         },
+//         {
+//             filter: 'fadein',
+//             state: false,
+//         },
+//         {
+//             filter: 'dim',
+//             state: false,
+//         },
+//         {
+//             filter: 'earrape',
+//             state: false,
+//         },
+//     ]);
 // }, 1000);
