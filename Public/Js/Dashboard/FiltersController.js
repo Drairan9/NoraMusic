@@ -19,7 +19,7 @@ function createFilter(name, state) {
     input.setAttribute('data-filter-id', name);
     //input.setAttribute('onclick', `controlFilter('${name}', this.checked)`);
 
-    // if (state === null) input.classList.add('filter-checkbox-inactive');
+    if (state === null) input.classList.add('filter-checkbox-inactive');
 
     li.appendChild(input);
 
