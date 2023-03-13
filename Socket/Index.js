@@ -7,6 +7,8 @@ import queueActions from '#Discord/Actions/QueueActions.js';
 
 let io;
 
+//TODO: socket calls pool / cooldown
+
 export default function createSocket(server, client) {
     io = new Server(server, {
         maxHttpBufferSize: 2e6, // 4Mb
@@ -54,27 +56,19 @@ export default function createSocket(server, client) {
                 logger.error(err);
             }
         });
-        //TODO: error handling
-        socket.on('enable-filter', async (name, callback) => {
+
+        socket.on('update-filter', async (args) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
-            let res = await filterActions.enableFilter(client, userData.url, name);
-            emitClient.filtersUpdate(userData.url, res.payload.filters);
-            return callback({
-                isSuccess: true,
-                errorMessage: '',
-                payload: '',
-            });
-        });
-        //TODO: error handling
-        socket.on('disable-filter', async (name, callback) => {
-            let userData = await readSocketHandshake(socket.handshake.headers);
-            let res = await filterActions.disableFilter(client, userData.url, name);
-            emitClient.filtersUpdate(userData.url, res.payload.filters);
-            return callback({
-                isSuccess: true,
-                errorMessage: '',
-                payload: '',
-            });
+            let response;
+            if (args.enabled) {
+                response = await filterActions.enableFilter(client, userData.url, args.filter);
+            } else {
+                response = await filterActions.disableFilter(client, userData.url, args.filter);
+            }
+
+            if (response.isSuccess) {
+                emitClient.filtersUpdate(userData.url, response.payload.filters);
+            }
         });
 
         socket.on('control-song', async (option, callback) => {

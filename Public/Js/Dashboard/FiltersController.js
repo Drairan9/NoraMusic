@@ -1,3 +1,9 @@
+function _addListener(element) {
+    element.addEventListener('change', () => {
+        emitServer.updateFilter(element.getAttribute('data-filter-id'), element.checked);
+    });
+}
+
 function createFilter(name, state) {
     const mainList = document.querySelector('.filters-list');
 
@@ -13,11 +19,12 @@ function createFilter(name, state) {
     input.setAttribute('data-filter-id', name);
     //input.setAttribute('onclick', `controlFilter('${name}', this.checked)`);
 
-    if (state === null) input.classList.add('filter-checkbox-inactive');
+    // if (state === null) input.classList.add('filter-checkbox-inactive');
 
     li.appendChild(input);
 
     mainList.appendChild(li);
+    _addListener(input);
 }
 
 function clearFilters() {

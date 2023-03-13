@@ -1,4 +1,4 @@
-const socket = io('ws://localhost:3000');
+const socket = io(`ws://${document.location.host}`);
 
 console.log('Connecting...');
 
@@ -41,7 +41,7 @@ socket.on('connect', () => {
 });
 
 socket.on('now-playing', (trackName) => {
-    if (trackName === null) setNowPlaying('');
+    if (trackName === null) return setNowPlaying('');
 
     setNowPlaying(trackName.title);
 });
@@ -58,3 +58,9 @@ socket.on('loop-update', (mode) => {});
 socket.on('filter-update', (filterList) => {
     updateFilters(filterList);
 });
+
+class emitServer {
+    static updateFilter(filterId, enabled) {
+        socket.emit('update-filter', { filter: filterId, enabled: enabled });
+    }
+}
