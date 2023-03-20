@@ -27,3 +27,5 @@ function queueClearList() {
     const mainList = document.querySelector('.queue-list');
     mainList.innerHTML = '';
 }
+
+function setRepeatMode(params) {}
