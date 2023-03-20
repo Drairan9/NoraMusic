@@ -16,10 +16,10 @@ export const data = {
 
         ///// IMPORTED
 
-        const queue = await client.player.createQueue(interaction.guild);
+        const queue = await client.player.nodes.create(interaction.guild);
         if (!queue.connection) return interaction.reply('no queue');
 
-        const success = queue.skip();
+        const success = queue.node.skip();
 
         interaction.editReply(success ? 'Skipped' : 'Error');
     },

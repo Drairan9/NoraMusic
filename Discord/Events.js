@@ -2,23 +2,23 @@ import filterActions from '#Discord/Actions/FilterActions.js';
 import { emitClient } from '#Socket';
 
 export const registerPlayerEvents = (player) => {
-    player.on('connectionCreate', (queue, connection) => {
+    player.events.on('connection', (queue, connection) => {
         emitClient.filtersUpdate(queue.guild.id, filterActions.getQueueFilters(player.client, queue.guild.id));
         console.log('Connection created!');
     });
 
-    player.on('botDisconnect', (queue, connection) => {
+    player.events.on('disconnect', (queue, connection) => {
         console.log('Bot disconnected!');
         emitClient.nowPlaying(queue.guild.id, null);
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
         emitClient.playPause(queue.guild.id, false);
     });
 
-    player.on('connectionError', (queue, connection) => {
+    player.events.on('playerError', (queue, connection) => {
         console.log('Connection error!', connection);
     });
 
-    player.on('queueEnd', (queue, connection) => {
+    player.events.on('emptyQueue', (queue, connection) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
         emitClient.nowPlaying(queue.guild.id, null);
         emitClient.filtersUpdate(queue.guild.id, filterActions.getQueueFilters(player.client, queue.guild.id));
@@ -26,13 +26,13 @@ export const registerPlayerEvents = (player) => {
         console.log('End of queue!');
     });
 
-    player.on('trackAdd', (queue, track) => {
+    player.events.on('audioTrackAdd', (queue, track) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
         console.log(queue.tracks);
         console.log(`Added track ${track}`);
     });
 
-    player.on('trackStart', (queue, track) => {
+    player.events.on('playerStart', (queue, track) => {
         emitClient.nowPlaying(queue.guild.id, track);
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
         emitClient.playPause(queue.guild.id, true);

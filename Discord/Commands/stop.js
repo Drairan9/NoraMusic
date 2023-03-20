@@ -10,8 +10,8 @@ export const data = {
             return;
         }
 
-        const queue = client.player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) {
+        const queue = client.player.nodes.get(interaction.guild.id);
+        if (!queue || !queue.node.isPlaying()) {
             interaction.reply('no playing');
             return;
         }

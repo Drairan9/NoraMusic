@@ -7,7 +7,7 @@ export default class filterActions {
      * @return Array with object {name, status} or null when queue is undefinied
      */
     static getQueueFilters(client, guildId) {
-        let queueStatus = !client.player.getQueue(guildId) ? false : true;
+        let queueStatus = !client.player.nodes.get(guildId) ? false : true;
         if (!queueStatus) {
             let outputArray = [];
             FILTERS.forEach((filter) => {
@@ -16,8 +16,8 @@ export default class filterActions {
             return outputArray;
         }
 
-        let queue = client.player.createQueue(guildId);
-        let enabledFilters = queue.getFiltersEnabled();
+        let queue = client.player.nodes.get(guildId);
+        let enabledFilters = queue.filters.ffmpeg.getFiltersEnabled();
         let filtersOutputArray = [];
 
         FILTERS.forEach((filter) => {
@@ -33,15 +33,15 @@ export default class filterActions {
      */
     static async enableFilter(client, guildId, filter) {
         if (!FILTERS.includes(filter)) return { isSuccess: false, errorMessage: 'Bad filter name.', payload: '' };
-        let queueStatus = !client.player.getQueue(guildId) ? false : true;
+        let queueStatus = !client.player.nodes.get(guildId) ? false : true;
         if (!queueStatus) return { isSuccess: false, errorMessage: 'Queue is not created.', payload: '' };
 
-        let queue = client.player.createQueue(guildId);
-        let enabledFilters = queue.getFiltersEnabled();
+        let queue = client.player.nodes.get(guildId);
+        let enabledFilters = queue.filters.ffmpeg.getFiltersEnabled();
         if (enabledFilters.includes(filter)) return { isSuccess: true, errorMessage: '', payload: '' };
 
         enabledFilters.push(filter);
-        await queue.setFilters(
+        await queue.filters.ffmpeg.setFilters(
             enabledFilters.reduce(function (acc, cur) {
                 acc[cur] = true;
                 return acc;
@@ -56,11 +56,11 @@ export default class filterActions {
      */
     static async disableFilter(client, guildId, filter) {
         if (!FILTERS.includes(filter)) return { isSuccess: false, errorMessage: 'Bad filter name', payload: '' };
-        let queueStatus = !client.player.getQueue(guildId) ? false : true;
+        let queueStatus = !client.player.nodes.get(guildId) ? false : true;
         if (!queueStatus) return false;
 
-        let queue = client.player.createQueue(guildId);
-        let enabledFilters = queue.getFiltersEnabled();
+        let queue = client.player.nodes.get(guildId);
+        let enabledFilters = queue.filters.ffmpeg.getFiltersEnabled();
         if (!enabledFilters.includes(filter))
             return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
 
@@ -68,11 +68,11 @@ export default class filterActions {
 
         if (index > -1) enabledFilters.splice(index, 1);
         if (enabledFilters.length === 0) {
-            queue.setFilters({ filter: false });
+            queue.filters.ffmpeg.setFilters({ filter: false });
             return { isSuccess: true, errorMessage: '', payload: { filters: this.getQueueFilters(client, guildId) } };
         }
 
-        await queue.setFilters(
+        await queue.filters.ffmpeg.setFilters(
             enabledFilters.reduce(function (acc, cur) {
                 acc[cur] = true;
                 return acc;

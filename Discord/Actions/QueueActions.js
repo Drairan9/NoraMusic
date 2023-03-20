@@ -8,7 +8,7 @@ export default class Queue {
      * @return String with song title / false => error / null => not playing
      */
     static getNowPlaying(client, guildId) {
-        const queue = client.player.getQueue(guildId);
+        const queue = client.player.nodes.get(guildId);
         const queueStatus = !queue ? false : true;
         if (!queueStatus) return false;
 
@@ -25,7 +25,7 @@ export default class Queue {
      * @return Array with queued tracks
      */
     static getQueue(client, guildId) {
-        const queue = client.player.getQueue(guildId);
+        const queue = client.player.nodes.get(guildId);
         const queueStatus = !queue ? false : true;
         if (!queueStatus) return false;
 
@@ -38,7 +38,7 @@ export default class Queue {
      * @return Array with queued tracks
      */
     static isQueueExist(client, guildId) {
-        const queue = client.player.getQueue(guildId);
+        const queue = client.player.nodes.get(guildId);
         return !queue ? false : true;
     }
 
@@ -48,8 +48,8 @@ export default class Queue {
      * @return {Number} Repeat mode
      */
     static getRepeatMode(client, guildId) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
+        const queue = client.player.nodes.get(guildId);
+        if (!queue || !queue.node.isPlaying()) return false;
         return queue.repeatMode;
     }
 
@@ -59,10 +59,10 @@ export default class Queue {
      * @return true - success
      */
     static playPauseSong(client, guildId) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
-        queue.connection.paused ? queue.setPaused(false) : queue.setPaused(true);
-        emitClient.playPause(guildId, !queue.connection.paused);
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+        queue.node.isPaused() ? queue.node.resume() : queue.node.pause();
+        emitClient.playPause(guildId, !queue.node.isPaused());
         return true;
     }
 
@@ -72,9 +72,9 @@ export default class Queue {
      * @return true = paused / false = playing
      */
     static isPaused(client, guildId) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
-        return queue.connection.paused;
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+        return queue.node.isPaused();
     }
 
     /**
@@ -83,10 +83,10 @@ export default class Queue {
      * @return true - success
      */
     static skipForward(client, guildId) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
+        const queue = client.player.nodes.get(guildId);
+        if (!queue || !queue.node.isPlaying()) return false;
 
-        const success = queue.skip();
+        const success = queue.node.skip();
 
         return success ? true : false;
     }
@@ -96,15 +96,19 @@ export default class Queue {
      * @param {String} guildId
      * @return true - success
      */
-    static skipBack(client, guildId) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
+    static async skipBack(client, guildId) {
+        const queue = client.player.nodes.get(guildId);
+        if (!queue || !queue.node.isPlaying()) return false;
 
-        if (queue.previousTracks.length > 1) {
-            queue.back();
-            return true;
-        } else {
+        if (queue.history.previousTrack == null) {
             return false;
+        }
+
+        try {
+            await queue.history.previous();
+            return true;
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -115,8 +119,8 @@ export default class Queue {
      * @return true - success
      */
     static async shuffleQueue(client, guildId, broadcast) {
-        const queue = client.player.getQueue(guildId);
-        if (!queue || !queue.playing) return false;
+        const queue = client.player.nodes.get(guildId);
+        if (!queue || !queue.node.isPlaying()) return false;
 
         await queue.shuffle();
         if (broadcast) emitClient.queueUpdate(guildId, queue.tracks);
@@ -131,10 +135,10 @@ export default class Queue {
      * @return {Object} {success: boolean, errorMessage: string}
      */
     static async loopQueue(client, guildId, mode, broadcast) {
-        const queue = client.player.getQueue(guildId);
+        const queue = client.player.nodes.get(guildId);
         let modeName;
         let res;
-        if (!queue || !queue.playing) return false;
+        if (!queue || !queue.node.isPlaying()) return false;
 
         switch (mode) {
             case 0:

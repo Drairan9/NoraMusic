@@ -20,7 +20,7 @@ export const data = {
 
         ///// IMPORTED
 
-        const queue = await client.player.createQueue(interaction.guild);
+        const queue = await client.player.nodes.create(interaction.guild);
         // if (!queue.connection) await queue.connect(interaction.member.voice.channel);
         if (!queue.connection) {
             joinVoiceChannel({
@@ -37,11 +37,9 @@ export const data = {
         });
         if (result.tracks.length === 0) return interaction.editReply('No results');
 
-        // const song = result.tracks[0];
-        // await queue.addTrack(song);
-        result.playlist ? queue.addTracks(result.tracks) : queue.addTrack(result.tracks[0]);
+        queue.addTrack(result.tracks[0]);
 
-        if (!queue.playing) await queue.play();
+        if (!queue.node.isPlaying()) await queue.node.play();
 
         result.playlist
             ? await interaction.editReply(`Added ${result.tracks.length} songs`)

@@ -28,7 +28,7 @@
     "axios": "^1.2.2",
     "cassandra-driver": "^4.6.4",
     "cassandra-store": "^5.0.0",
-    "discord-player": "^5.3.2",
+    "discord-player": "^6.1.1",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",

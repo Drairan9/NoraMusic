@@ -12,6 +12,8 @@ socket.on('connect', () => {
         });
 
         if (!response.payload.queue) {
+            queueClearList();
+            setNowPlaying('');
             SnackBar({
                 status: 'warning',
                 message: 'Bot is not connected to voice channel.',
@@ -28,7 +30,6 @@ socket.on('connect', () => {
 
         if (response.payload.nowPlaying) {
             setNowPlaying(response.payload.nowPlaying);
-            console.log(response.payload.nowPlaying);
         }
 
         if (response.payload.queueList) {
