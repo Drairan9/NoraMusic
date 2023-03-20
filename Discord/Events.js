@@ -11,6 +11,7 @@ export const registerPlayerEvents = (player) => {
         console.log('Bot disconnected!');
         emitClient.nowPlaying(queue.guild.id, null);
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
+        emitClient.playPause(queue.guild.id, false);
     });
 
     player.on('connectionError', (queue, connection) => {
@@ -21,6 +22,7 @@ export const registerPlayerEvents = (player) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
         emitClient.nowPlaying(queue.guild.id, null);
         emitClient.filtersUpdate(queue.guild.id, filterActions.getQueueFilters(player.client, queue.guild.id));
+        emitClient.playPause(queue.guild.id, false);
         console.log('End of queue!');
     });
 
@@ -33,6 +35,7 @@ export const registerPlayerEvents = (player) => {
     player.on('trackStart', (queue, track) => {
         emitClient.nowPlaying(queue.guild.id, track);
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
+        emitClient.playPause(queue.guild.id, true);
         console.log(`Started track ${track}`);
     });
 };

@@ -45,11 +45,12 @@ export default function createSocket(server, client) {
                     let filters = filterActions.getQueueFilters(client, userData.url);
                     let queueList = queueActions.getQueue(client, userData.url);
                     let repeatMode = queueActions.getRepeatMode(client, userData.url);
+                    let playingStatus = !queueActions.isPaused(client, userData.url);
 
                     return callback({
                         isSuccess: true,
                         errorMessage: '',
-                        payload: { queue: true, nowPlaying, filters, queueList, repeatMode },
+                        payload: { queue: true, nowPlaying, filters, queueList, repeatMode, playingStatus },
                     });
                 }
             } catch (err) {
@@ -68,6 +69,36 @@ export default function createSocket(server, client) {
 
             if (response.isSuccess) {
                 emitClient.filtersUpdate(userData.url, response.payload.filters);
+            }
+        });
+
+        socket.on('play-pause', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = queueActions.playPauseSong(client, userData.url);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        socket.on('skip-back', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = queueActions.skipBack(client, userData.url);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        socket.on('skip-forward', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = queueActions.skipForward(client, userData.url);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
             }
         });
 
@@ -123,6 +154,10 @@ export class emitClient {
 
     static loopUpdate(guildId, mode) {
         io.in(guildId).emit('loop-update', mode);
+    }
+
+    static playPause(guildId, state) {
+        io.in(guildId).emit('play-pause', state);
     }
 }
 

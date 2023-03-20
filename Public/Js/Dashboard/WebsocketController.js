@@ -37,6 +37,11 @@ socket.on('connect', () => {
                 createQueueElement(track.author, track.title, track.thumbnail, index.toString());
             });
         }
+
+        if (response.payload.playingStatus) {
+            console.log(response.payload.playingStatus);
+            setPlayStatus(response.payload.playingStatus);
+        }
     });
 });
 
@@ -59,8 +64,62 @@ socket.on('filter-update', (filterList) => {
     updateFilters(filterList);
 });
 
+socket.on('play-pause', (state) => {
+    setPlayStatus(state);
+});
+
 class emitServer {
     static updateFilter(filterId, enabled) {
         socket.emit('update-filter', { filter: filterId, enabled: enabled });
+    }
+
+    static playPause() {
+        socket.emit('play-pause', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static skipBack() {
+        console.log('back');
+        socket.emit('skip-back', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static skipForward() {
+        console.log('forward');
+        socket.emit('skip-forward', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
     }
 }

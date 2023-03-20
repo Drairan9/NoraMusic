@@ -62,7 +62,19 @@ export default class Queue {
         const queue = client.player.getQueue(guildId);
         if (!queue || !queue.playing) return false;
         queue.connection.paused ? queue.setPaused(false) : queue.setPaused(true);
+        emitClient.playPause(guildId, !queue.connection.paused);
         return true;
+    }
+
+    /**
+     * @param {DiscordClient} client
+     * @param {String} guildId
+     * @return true = paused / false = playing
+     */
+    static isPaused(client, guildId) {
+        const queue = client.player.getQueue(guildId);
+        if (!queue || !queue.playing) return false;
+        return queue.connection.paused;
     }
 
     /**
@@ -70,7 +82,7 @@ export default class Queue {
      * @param {String} guildId
      * @return true - success
      */
-    static nextSong(client, guildId) {
+    static skipForward(client, guildId) {
         const queue = client.player.getQueue(guildId);
         if (!queue || !queue.playing) return false;
 
@@ -84,7 +96,7 @@ export default class Queue {
      * @param {String} guildId
      * @return true - success
      */
-    static perviousSong(client, guildId) {
+    static skipBack(client, guildId) {
         const queue = client.player.getQueue(guildId);
         if (!queue || !queue.playing) return false;
 
