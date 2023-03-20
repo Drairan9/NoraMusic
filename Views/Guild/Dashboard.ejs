@@ -34,27 +34,8 @@
     <div class="queue-container body-card"> <!-- queue-loop-all queue-loop-one -->
         <h1 class="title">Queue</h1>
         <ul class="queue-list">
-            <script>
-                // for (let index = 0; index < 50; index++) {
-                //     document.write(`
-                //     <li class="queue-item">
-                //         <span class="queue-item-index">${index + 1}</span>
-                //         <img src="https://i.ytimg.com/vi_webp/4SvdaWekDJI/maxresdefault.webp" alt="" class="queue-item-image">
-                //         <div class="queue-item-text-wrapper">
-                //             <h4 class="queue-item-title">Gzuz & Bonez - YumYum (Original)</h4>
-                //             <span class="queue-item-artist">CrhymeTV</span>
-                //         </div>
-                        
-                //         <div class="queue-item-controls">
-                //             <button class="queue-item-button">Remove</button>  
-                //             <button class="queue-item-button">Jump to</button>  
-                //         </div>
-                //     </li>
-                //     `)
-                // }
-            </script>
         </ul>
-        <button class="queue-stop-button">Stop queue</button>
+        <button id="queue-stop" class="queue-stop-button">Stop queue</button>
     </div>
 
     <div class="content-container">
@@ -106,7 +87,7 @@
         </div>
 
         <div class="controls body-card">
-            <button class="control-button"><ion-icon name="shuffle-sharp"></ion-icon></button>
+            <button id="shuffle" class="control-button"><ion-icon name="shuffle-sharp"></ion-icon></button>
             <button id="skip-back"class="control-button"><ion-icon name="play-skip-back-sharp"></ion-icon></button>
             <button id="play-pause" class="control-button button-play-pause"><ion-icon name="play-sharp"></ion-icon></button>
             <button id="skip-forward" class="control-button"><ion-icon name="play-skip-forward-sharp"></ion-icon></button>

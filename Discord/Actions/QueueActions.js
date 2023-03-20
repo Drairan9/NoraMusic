@@ -120,9 +120,9 @@ export default class Queue {
      */
     static async shuffleQueue(client, guildId, broadcast) {
         const queue = client.player.nodes.get(guildId);
-        if (!queue || !queue.node.isPlaying()) return false;
+        if (!queue) return false;
 
-        await queue.shuffle();
+        await queue.tracks.shuffle();
         if (broadcast) emitClient.queueUpdate(guildId, queue.tracks);
         return true;
     }
@@ -163,5 +163,19 @@ export default class Queue {
         }
         if (broadcast) emitClient.loopUpdate(guildId, mode);
         return { success: true, errorMessage: '' };
+    }
+
+    /**
+     * @param {DiscordClient} client
+     * @param {String} guildId
+     * @param {Boolean} broadcast Is operation should be broadcasted to ws room
+     * @return true - success
+     */
+    static async queueStop(client, guildId) {
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+
+        queue.delete();
+        return true;
     }
 }

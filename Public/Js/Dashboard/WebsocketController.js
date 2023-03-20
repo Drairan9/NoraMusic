@@ -43,6 +43,9 @@ socket.on('connect', () => {
             console.log(response.payload.playingStatus);
             setPlayStatus(response.payload.playingStatus);
         }
+
+        if (response.payload.repeatMode) {
+        }
     });
 });
 
@@ -110,6 +113,38 @@ class emitServer {
     static skipForward() {
         console.log('forward');
         socket.emit('skip-forward', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static shuffle() {
+        socket.emit('shuffle', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static queueStop() {
+        socket.emit('queue-stop', (response) => {
             if (!response) {
                 SnackBar({
                     status: 'error',

@@ -102,6 +102,26 @@ export default function createSocket(server, client) {
             }
         });
 
+        socket.on('shuffle', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = queueActions.shuffleQueue(client, userData.url, true);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        socket.on('queue-stop', async (callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = queueActions.queueStop(client, userData.url);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
         socket.on('control-song', async (option, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
             let res;
