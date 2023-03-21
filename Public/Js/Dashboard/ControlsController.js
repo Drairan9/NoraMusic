@@ -8,6 +8,13 @@ document.querySelector('#shuffle').addEventListener('click', () => emitServer.sh
 
 document.querySelector('#queue-stop').addEventListener('click', () => emitServer.queueStop());
 
+document.querySelectorAll('#repeat').forEach((button) => {
+    let repeatType = button.dataset.repeatType;
+    button.addEventListener('click', () => {
+        emitServer.setRepeatMode(repeatType);
+    });
+});
+
 function setPlayStatus(status) {
     let button = document.querySelector('#play-pause');
     // 0 - paused | 1 - playing (status)

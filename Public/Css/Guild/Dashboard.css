@@ -141,7 +141,7 @@ button{
 }
 
 .queue-loop-one::before, .queue-loop-all::before{
-    content: "Repeat queue";
+    content: "Loop enabled";
     color: var(--color-white);
     background-color: var(--color-main);
     width: fit-content;

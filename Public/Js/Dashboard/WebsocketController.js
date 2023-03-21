@@ -14,6 +14,8 @@ socket.on('connect', () => {
         if (!response.payload.queue) {
             queueClearList();
             setNowPlaying('');
+            setPlayStatus(0);
+            setRepeatMode(0);
             SnackBar({
                 status: 'warning',
                 message: 'Bot is not connected to voice channel.',
@@ -29,22 +31,28 @@ socket.on('connect', () => {
         }
 
         if (response.payload.nowPlaying) {
-            setNowPlaying(response.payload.nowPlaying);
+            setNowPlaying(response.payload.nowPlaying.title);
+            setNowPlayingMetadata(
+                response.payload.nowPlaying.title,
+                response.payload.nowPlaying.author,
+                response.payload.nowPlaying.thumbnail
+            );
         }
 
         if (response.payload.queueList) {
             queueClearList();
+            queueNowPlaying();
             response.payload.queueList.forEach((track, index) => {
                 createQueueElement(track.author, track.title, track.thumbnail, index.toString());
             });
         }
 
         if (response.payload.playingStatus) {
-            console.log(response.payload.playingStatus);
             setPlayStatus(response.payload.playingStatus);
         }
 
         if (response.payload.repeatMode) {
+            setRepeatMode(response.payload.repeatMode);
         }
     });
 });
@@ -53,16 +61,20 @@ socket.on('now-playing', (trackName) => {
     if (trackName === null) return setNowPlaying('');
 
     setNowPlaying(trackName.title);
+    setNowPlayingMetadata(trackName.title, trackName.author, trackName.thumbnail);
 });
 
 socket.on('queue-update', (trackList) => {
     queueClearList();
+    queueNowPlaying();
     trackList.forEach((track, index) => {
         createQueueElement(track.author, track.title, track.thumbnail, index.toString());
     });
 });
 
-socket.on('loop-update', (mode) => {});
+socket.on('loop-update', (mode) => {
+    setRepeatMode(mode);
+});
 
 socket.on('filter-update', (filterList) => {
     updateFilters(filterList);
@@ -145,6 +157,22 @@ class emitServer {
 
     static queueStop() {
         socket.emit('queue-stop', (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static setRepeatMode(mode) {
+        socket.emit('set-repeat-mode', mode, (response) => {
             if (!response) {
                 SnackBar({
                     status: 'error',

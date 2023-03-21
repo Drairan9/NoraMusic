@@ -12,10 +12,10 @@ export default class Queue {
         const queueStatus = !queue ? false : true;
         if (!queueStatus) return false;
 
-        if (!queue.current) {
+        if (!queue.currentTrack) {
             return null;
         } else {
-            return `${queue.current.title} by ${queue.current.author}`;
+            return queue.currentTrack;
         }
     }
 

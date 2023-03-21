@@ -28,4 +28,34 @@ function queueClearList() {
     mainList.innerHTML = '';
 }
 
-function setRepeatMode(params) {}
+function queueNowPlaying() {
+    let nowPlaying = document.querySelector('.now-playing-title');
+    createQueueElement(nowPlaying.dataset.author, nowPlaying.dataset.title, nowPlaying.dataset.thumbnail, 'NP');
+}
+
+function setRepeatMode(type) {
+    // 0 = OFF, 1 = TRACK, 2 = QUEUE, 3 = AUTOPLAY
+    let queue = document.querySelector('.queue-container');
+    switch (parseInt(type)) {
+        case 0:
+            _clearQueueBlock();
+            break;
+        case 1:
+            _clearQueueBlock();
+            queue.classList.add('queue-loop-one');
+            break;
+        case 2:
+            _clearQueueBlock();
+            queue.classList.add('queue-loop-all');
+            break;
+        default:
+            _clearQueueBlock();
+            break;
+    }
+}
+
+function _clearQueueBlock() {
+    let queue = document.querySelector('.queue-container');
+    queue.classList.remove('queue-loop-all');
+    queue.classList.remove('queue-loop-one');
+}

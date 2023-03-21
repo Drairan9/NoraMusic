@@ -122,6 +122,17 @@ export default function createSocket(server, client) {
             }
         });
 
+        socket.on('set-repeat-mode', async (mode, callback) => {
+            let userData = await readSocketHandshake(socket.handshake.headers);
+            let result = await queueActions.loopQueue(client, userData.url, parseInt(mode), true);
+            console.log(result);
+            try {
+                callback(result.success);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
         socket.on('control-song', async (option, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
             let res;
