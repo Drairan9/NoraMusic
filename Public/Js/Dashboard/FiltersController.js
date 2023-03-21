@@ -1,4 +1,4 @@
-function _addListener(element) {
+function _addFilterListener(element) {
     element.addEventListener('change', () => {
         emitServer.updateFilter(element.getAttribute('data-filter-id'), element.checked);
     });
@@ -24,7 +24,7 @@ function createFilter(name, state) {
     li.appendChild(input);
 
     mainList.appendChild(li);
-    _addListener(input);
+    _addFilterListener(input);
 }
 
 function clearFilters() {

@@ -28,8 +28,12 @@ export const registerPlayerEvents = (player) => {
 
     player.events.on('audioTrackAdd', (queue, track) => {
         emitClient.queueUpdate(queue.guild.id, queue.tracks);
-        console.log(queue.tracks);
         console.log(`Added track ${track}`);
+    });
+
+    player.events.on('audioTrackRemove', (queue, track) => {
+        emitClient.queueUpdate(queue.guild.id, queue.tracks);
+        console.log(`Removed track ${track}`);
     });
 
     player.events.on('playerStart', (queue, track) => {

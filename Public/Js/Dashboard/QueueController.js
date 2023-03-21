@@ -1,3 +1,15 @@
+function _addQueueListenerJump(element, index) {
+    element.addEventListener('click', () => {
+        emitServer.jumpTo(index);
+    });
+}
+
+function _addQueueListenerRemove(element, index) {
+    element.addEventListener('click', () => {
+        emitServer.remove(index);
+    });
+}
+
 function createQueueElement(author, title, thumbnail, index) {
     const mainList = document.querySelector('.queue-list');
 
@@ -18,6 +30,9 @@ function createQueueElement(author, title, thumbnail, index) {
     let buttonRemove = _createElement('button', { class: 'queue-item-button' }, 'Remove');
     let buttonJump = _createElement('button', { class: 'queue-item-button' }, 'Jump to');
     _appendChilds(controlsDiv, [buttonRemove, buttonJump]);
+
+    _addQueueListenerJump(buttonJump, index);
+    _addQueueListenerRemove(buttonRemove, index);
 
     _appendChilds(li, [spanTitle, img, textDiv, controlsDiv]);
     mainList.appendChild(li);

@@ -68,6 +68,7 @@ socket.on('queue-update', (trackList) => {
     queueClearList();
     queueNowPlaying();
     trackList.forEach((track, index) => {
+        console.log(track);
         createQueueElement(track.author, track.title, track.thumbnail, index.toString());
     });
 });
@@ -173,6 +174,38 @@ class emitServer {
 
     static setRepeatMode(mode) {
         socket.emit('set-repeat-mode', mode, (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static jumpTo(index) {
+        socket.emit('jump-to', index, (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
+
+    static remove(index) {
+        socket.emit('remove', index, (response) => {
             if (!response) {
                 SnackBar({
                     status: 'error',

@@ -178,4 +178,32 @@ export default class Queue {
         queue.delete();
         return true;
     }
+
+    /**
+     * @param {DiscordClient} client
+     * @param {String} guildId
+     * @param {Number} index
+     * @return true - success
+     */
+    static async queueJumpto(client, guildId, index) {
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+
+        await queue.node.jump(parseInt(index));
+        return true;
+    }
+
+    /**
+     * @param {DiscordClient} client
+     * @param {String} guildId
+     * @param {Number} index
+     * @return true - success
+     */
+    static async queueRemove(client, guildId, index) {
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+
+        await queue.node.remove(parseInt(index));
+        return true;
+    }
 }
