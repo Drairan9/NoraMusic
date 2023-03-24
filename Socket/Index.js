@@ -7,7 +7,7 @@ import queueActions from '#Discord/Actions/QueueActions.js';
 
 let io;
 
-//TODO: socket calls pool / cooldown
+//TODO: socket calls ratelimiting
 
 export default function createSocket(server, client) {
     io = new Server(server, {
