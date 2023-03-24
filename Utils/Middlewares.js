@@ -1,6 +1,7 @@
 import Session from '#Models/SessionModel.js';
 
 export const isAuthenticated = (req, res, next) => (req.user ? next() : res.redirect('/login/auth/discord'));
+export const isAuthenticatedApi = (req, res, next) => (req.user ? next() : res.sendStatus(401));
 export const hasGuilds = (req, res, next) => (req.session.guilds ? next() : res.redirect('/guild'));
 
 /**

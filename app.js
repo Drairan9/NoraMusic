@@ -12,6 +12,7 @@ import createSocket from './Socket/Index.js';
 import indexRouter from '#Root/Routes/Index.js';
 import loginRouter from '#Root/Routes/Login.js';
 import guildRouter from '#Root/Routes/Guild.js';
+import apiRouter from '#Root/Routes/Api.js';
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/guild', guildRouter);
+app.use('/api', apiRouter);
 
 const server = app.listen(process.env.SERVER_PORT, () => {
     logger.info(`*Norabot web dj* running on port ${process.env.SERVER_PORT}`);

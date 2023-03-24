@@ -22,7 +22,7 @@ export async function getUserRecommendations(discordId, retries = 3) {
                 .catch(async (err) => {
                     if (retries > 0) {
                         if (err.response.status === 429) {
-                            let retryTime = err.response.data.retry_after * 1000;
+                            let retryTime = err.response.data.retry_after * 1500;
                             setTimeout(async () => {
                                 retries--;
                                 makeCall();
@@ -70,4 +70,28 @@ function requestAccessToken(discordId, refreshToken) {
                 reject(err);
             });
     });
+}
+
+export async function isSpotifyExist(discordId) {
+    await SpotifyUser.findById(discordId)
+        .then((result) => {
+            if (!result) return false;
+            return true;
+        })
+        .catch((err) => {
+            logger.error(err);
+            return false;
+        });
+}
+
+function _deconstructSpotifyTracks(tracks) {
+    let tracksArray = [];
+    tracks.forEach((track) => {
+        const url = track.external_urls.spotify;
+        const cover = track.album.images[0].url;
+        const title = track.name;
+        const artists = track.artists.map((artist) => artist.name).join(', ');
+        tracksArray.push({ url, cover, title, artists });
+    });
+    return tracksArray;
 }
