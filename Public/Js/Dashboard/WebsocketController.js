@@ -219,4 +219,20 @@ class emitServer {
             }
         });
     }
+
+    static addSong(url) {
+        socket.emit('add-song', url, (response) => {
+            if (!response) {
+                SnackBar({
+                    status: 'error',
+                    message: 'Error',
+                });
+            } else {
+                SnackBar({
+                    status: 'success',
+                    message: 'Success',
+                });
+            }
+        });
+    }
 }

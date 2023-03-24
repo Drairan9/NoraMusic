@@ -1,5 +1,5 @@
 import { emitClient } from '#Socket';
-import { QueueRepeatMode } from 'discord-player';
+import { QueueRepeatMode, QueryType } from 'discord-player';
 
 export default class Queue {
     /**
@@ -204,6 +204,25 @@ export default class Queue {
         if (!queue) return false;
 
         await queue.node.remove(parseInt(index));
+        return true;
+    }
+
+    /**
+     * @param {DiscordClient} client
+     * @param {String} guildId
+     * @param {String} url
+     * @return true - success
+     */
+    static async addSong(client, guildId, url) {
+        const queue = client.player.nodes.get(guildId);
+        if (!queue) return false;
+
+        const result = await client.player.search(url, {
+            searchEngine: QueryType.AUTO,
+        });
+        if (result.tracks.length === 0) return false;
+
+        queue.addTrack(result.tracks[0]);
         return true;
     }
 }

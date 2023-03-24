@@ -152,38 +152,13 @@ export default function createSocket(server, client) {
             }
         });
 
-        socket.on('control-song', async (option, callback) => {
+        socket.on('add-song', async (url, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
-            let res;
-
-            switch (option.option) {
-                case 'play-pause':
-                    res = queueActions.playPauseSong(client, userData.url);
-                    callback(res ? true : 'Something went wrong.');
-                    break;
-                case 'pervious-song':
-                    res = queueActions.perviousSong(client, userData.url);
-                    callback(res ? true : 'Something went wrong.');
-                    break;
-                case 'next-song':
-                    res = queueActions.nextSong(client, userData.url);
-                    callback(res ? true : 'Something went wrong.');
-                    break;
-                case 'shuffle-queue':
-                    res = queueActions.shuffleQueue(client, userData.url, true);
-                    callback(res ? true : 'Something went wrong.');
-                    break;
-                case 'stop-queue':
-                    // res = queueActions.nextSong(client, userData.url);
-                    // callback(res ? true : 'Something went wrong.');
-                    break;
-                case 'repeat-queue':
-                    res = await queueActions.loopQueue(client, userData.url, 2);
-                    callback(res.success ? true : res.errorMessage);
-                    break;
-                default:
-                    callback({ isSuccess: false, error: true, errorMessage: 'Unknown option.' });
-                    break;
+            let result = await queueActions.addSong(client, userData.url, url);
+            try {
+                callback(result);
+            } catch (error) {
+                console.log(error);
             }
         });
     });
