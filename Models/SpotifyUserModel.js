@@ -1,4 +1,5 @@
 import cassandra from '#Database/Index.js';
+import logger from '#Logger';
 
 export default class SpotifyUser {
     constructor(discordId, accessToken, refreshToken, spotifyId) {
@@ -48,6 +49,7 @@ export default class SpotifyUser {
 
     static async findById(discordId) {
         return new Promise(async (resolve, reject) => {
+            logger.debug(`Getting spotify token from DB for user ${discordId}`);
             const query = 'SELECT * FROM spotify_users WHERE discord_id = ?';
             const params = [discordId];
             await cassandra.execute(query, params, { prepare: true }, (err, res) => {
