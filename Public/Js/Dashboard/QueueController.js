@@ -63,6 +63,10 @@ function setRepeatMode(type) {
             _clearQueueBlock();
             queue.classList.add('queue-loop-all');
             break;
+        case 3:
+            _clearQueueBlock();
+            queue.classList.add('queue-auto-play');
+            break;
         default:
             _clearQueueBlock();
             break;

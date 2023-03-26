@@ -38,7 +38,10 @@
         <h1 class="title">Queue</h1>
         <ul class="queue-list">
         </ul>
-        <button id="queue-stop" class="queue-stop-button">Stop queue</button>
+        <div class="queue-button-wrapper">
+            <button id="queue-stop" class="queue-stop-button">Stop queue</button>
+            <button id="repeat" class="queue-stop-button" data-repeat-type="3">Autoplay</button>
+        </div>
     </div>
 
     <div class="content-container">
@@ -70,27 +73,6 @@
                     </div>
                 </div>
             <% } %>
-            <!-- <ul class="recommendations-list" style="display: none;">
-                <script>
-                    for (let index = 0; index < 10; index++) {
-                        document.write(`
-                        <li class="recommendations-element">
-                            <img class="recommendations-element-img" src="https://i.scdn.co/image/ab67616d0000b273ff95d6da36363251247978a4" alt="Spotify cover">
-                            <div class="recommendations-element-text-wrapper">
-                                <h4 title="WDYW (feat. Lil Uzi Vert, A$AP Ferg & Rich The Kid)" class="recommendations-element-title">WDYW (feat. Lil Uzi Vert, A$AP Ferg & Rich The Kid)</h4>
-                                <span class="recommendations-element-authors">Carnage, Lil Uzi Vert, A$AP Ferg, Rich The Kid</span>
-                            </div>
-                        </li>
-                        `)
-                    }
-                </script>
-            </ul>
-            <div class="recommendations-auth-container">
-                <div class="spotify-auth-wrapper">
-                    <img src="Img/Guild/Spotify_Logo_RGB_Green.png" alt="Spotify logo" class="recommendations-auth-logo">
-                    <a href="/login/auth/spotify" class="recommendations-auth-button">Connect</a>
-                </div>
-            </div> -->
         </div>
     </div>
 

@@ -10,6 +10,7 @@ function renderSpotifySuggestions() {
             response.data.forEach((song) => {
                 renderSpotifyElement(song.cover, song.title, song.artists, song.url);
             });
+            setBacklight();
         })
         .catch((error) => {
             console.log(error);
@@ -44,5 +45,19 @@ function clearSpotifyList() {
 function _addSpotifyEventListener(element, url) {
     element.addEventListener('click', () => {
         emitServer.addSong(url);
+    });
+}
+
+function setBacklight() {
+    let elementsArray = document.querySelectorAll('.recommendations-element');
+    let targetSize = 0;
+    elementsArray.forEach((element) => {
+        if (element.offsetWidth > targetSize) {
+            targetSize = element.offsetWidth;
+        }
+    });
+
+    elementsArray.forEach((element) => {
+        element.style.width = `${targetSize + 10}px`;
     });
 }

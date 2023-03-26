@@ -140,6 +140,19 @@ button{
         );
 }
 
+.queue-auto-play::before{
+    content: "Autoplay";
+    color: var(--color-white);
+    background-color: var(--color-main);
+    width: fit-content;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 5px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
 .queue-loop-one::before, .queue-loop-all::before{
     content: "Loop enabled";
     color: var(--color-white);
@@ -249,6 +262,12 @@ button{
     font-weight: 400;
     padding: 0;
     margin: 0;
+}
+
+.queue-button-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 15px;
 }
 
 .queue-stop-button{
