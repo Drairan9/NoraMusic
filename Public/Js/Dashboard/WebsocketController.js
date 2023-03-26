@@ -220,19 +220,23 @@ class emitServer {
         });
     }
 
-    static addSong(url) {
-        socket.emit('add-song', url, (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+    static async addSong(url) {
+        return new Promise((resolve, reject) => {
+            socket.emit('add-song', url, (response) => {
+                if (!response) {
+                    SnackBar({
+                        status: 'error',
+                        message: 'Error',
+                    });
+                    reject();
+                } else {
+                    SnackBar({
+                        status: 'success',
+                        message: 'Success',
+                    });
+                    resolve();
+                }
+            });
         });
     }
 }

@@ -1,4 +1,4 @@
-document.querySelector('.input-button').addEventListener('click', () => {
+document.querySelector('.input-button').addEventListener('click', async () => {
     let query = document.querySelector('.input-core').value;
 
     if (!query) {
@@ -7,5 +7,16 @@ document.querySelector('.input-button').addEventListener('click', () => {
             message: 'Provide song input',
         });
     }
-    emitServer.addSong(query);
+    await emitServer
+        .addSong(query)
+        .then(() => {
+            clearPrompt();
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 });
+
+function clearPrompt() {
+    document.querySelector('.input-core').value = '';
+}
