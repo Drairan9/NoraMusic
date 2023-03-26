@@ -35,10 +35,11 @@ export const readConnectSid = (sessionID) => {
 /**
  *  Get from socket handshake discord_id & url request
  * @param {String} Headers Socket.io headers
- * @returns {Object} Object with discord_id & url
+ * @returns {Object} Object with discord_id & url OR false if session is expired
  */
 export async function readSocketHandshake(headers) {
     let requestUrl = headers.referer.split('/');
+    if (!headers.cookie || !parseCookieString(headers.cookie).get('connect.sid')) return false;
     let clientSid = readConnectSid(parseCookieString(headers.cookie).get('connect.sid'));
     let DbSessionCookie = await Session.findBySid(clientSid);
     DbSessionCookie = JSON.parse(DbSessionCookie.sid);
@@ -47,4 +48,14 @@ export async function readSocketHandshake(headers) {
         discord_id: uId,
         url: requestUrl[requestUrl.length - 1],
     };
+}
+
+export function denySocketConnection(socket, callback) {
+    try {
+        callback({ isSuccess: false, errorMessage: 'Unauthorized.', payload: '' });
+        return socket.disconnect(0);
+    } catch (error) {
+        logger.error(err);
+        socket.disconnect(0);
+    }
 }

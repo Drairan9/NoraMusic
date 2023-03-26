@@ -1,20 +1,10 @@
 import express from 'express';
 import { isAuthenticatedApi } from '#Utils/Middlewares.js';
-import { getUserRecommendations } from '#Services/SpotifyUserService.js';
+import * as ApiController from '#Controllers/ApiController.js';
 
 let router = express.Router();
 
-router.get('/spotify', isAuthenticatedApi, async (req, res) => {
-    let discordId = req.user.discord_id;
-    try {
-        // let spotifyRes = await getUserRecommendations(discordId);
-        res.json(req.user);
-        console.log(req);
-        // res.json(_deconstructSpotifyTracks(spotifyRes.tracks));
-    } catch (error) {
-        res.json(error);
-    }
-});
+router.get('/spotify', isAuthenticatedApi, ApiController.spotify);
 
 //TODO: TEMPORARY
 function _deconstructSpotifyTracks(tracks) {

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { readSocketHandshake } from '#Utils/Middlewares.js';
+import { readSocketHandshake, denySocketConnection } from '#Utils/Middlewares.js';
 import { isInGuild } from '#Services/UserService.js';
 import logger from '#Utils/Logger.js';
 import filterActions from '#Discord/Actions/FilterActions.js';
@@ -17,6 +17,8 @@ export default function createSocket(server, client) {
     io.on('connection', (socket) => {
         socket.on('server-hello', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             // Make sure that user is connecting with allowed guild
             let legalGuilds = await isInGuild(userData.discord_id, userData.url);
             if (legalGuilds.length <= 0) {
@@ -60,6 +62,8 @@ export default function createSocket(server, client) {
 
         socket.on('update-filter', async (args) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let response;
             if (args.enabled) {
                 response = await filterActions.enableFilter(client, userData.url, args.filter);
@@ -74,6 +78,8 @@ export default function createSocket(server, client) {
 
         socket.on('play-pause', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = queueActions.playPauseSong(client, userData.url);
             try {
                 callback(result);
@@ -84,6 +90,8 @@ export default function createSocket(server, client) {
 
         socket.on('skip-back', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = queueActions.skipBack(client, userData.url);
             try {
                 callback(result);
@@ -94,6 +102,8 @@ export default function createSocket(server, client) {
 
         socket.on('skip-forward', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = queueActions.skipForward(client, userData.url);
             try {
                 callback(result);
@@ -104,6 +114,8 @@ export default function createSocket(server, client) {
 
         socket.on('shuffle', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = queueActions.shuffleQueue(client, userData.url, true);
             try {
                 callback(result);
@@ -114,6 +126,8 @@ export default function createSocket(server, client) {
 
         socket.on('queue-stop', async (callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = queueActions.queueStop(client, userData.url);
             try {
                 callback(result);
@@ -124,6 +138,8 @@ export default function createSocket(server, client) {
 
         socket.on('set-repeat-mode', async (mode, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = await queueActions.loopQueue(client, userData.url, parseInt(mode), true);
             try {
                 callback(result.success);
@@ -134,6 +150,8 @@ export default function createSocket(server, client) {
 
         socket.on('jump-to', async (index, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = await queueActions.queueJumpto(client, userData.url, index);
             try {
                 callback(result);
@@ -144,6 +162,8 @@ export default function createSocket(server, client) {
 
         socket.on('remove', async (index, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = await queueActions.queueRemove(client, userData.url, index);
             try {
                 callback(result);
@@ -154,6 +174,8 @@ export default function createSocket(server, client) {
 
         socket.on('add-song', async (url, callback) => {
             let userData = await readSocketHandshake(socket.handshake.headers);
+            if (!userData) return denySocketConnection(socket, callback);
+
             let result = await queueActions.addSong(client, userData.url, url);
             try {
                 callback(result);
