@@ -59,7 +59,18 @@
         </div>
         <div class="recommendations-container">
             <h1 class="title">Recommended songs</h1>
-            <ul class="recommendations-list" style="display: none;">
+            <% if(spotify){ %>
+                <ul class="recommendations-list"> 
+                </ul> 
+            <% }else{ %>
+                <div class="recommendations-auth-container">
+                    <div class="spotify-auth-wrapper">
+                        <img src="Img/Guild/Spotify_Logo_RGB_Green.png" alt="Spotify logo" class="recommendations-auth-logo">
+                        <a href="/login/auth/spotify" class="recommendations-auth-button">Connect</a>
+                    </div>
+                </div>
+            <% } %>
+            <!-- <ul class="recommendations-list" style="display: none;">
                 <script>
                     for (let index = 0; index < 10; index++) {
                         document.write(`
@@ -79,7 +90,7 @@
                     <img src="Img/Guild/Spotify_Logo_RGB_Green.png" alt="Spotify logo" class="recommendations-auth-logo">
                     <a href="/login/auth/spotify" class="recommendations-auth-button">Connect</a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

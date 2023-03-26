@@ -94,15 +94,17 @@ function requestAccessToken(discordId, refreshToken) {
 }
 
 export async function isSpotifyExist(discordId) {
-    await SpotifyUser.findById(discordId)
-        .then((result) => {
-            if (!result) return false;
-            return true;
-        })
-        .catch((err) => {
-            logger.error(`Failed searching spotify data inside DB for user ${discordId} with error: ${err}`);
-            return false;
-        });
+    return new Promise(async (resolve, reject) => {
+        await SpotifyUser.findById(discordId)
+            .then((result) => {
+                if (!result) reject(false);
+                resolve(true);
+            })
+            .catch((err) => {
+                logger.error(`Failed searching spotify data inside DB for user ${discordId} with error: ${err}`);
+                reject(false);
+            });
+    });
 }
 
 function _deconstructSpotifyTracks(tracks) {
