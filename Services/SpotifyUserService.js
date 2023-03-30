@@ -97,12 +97,12 @@ export async function isSpotifyExist(discordId) {
     return new Promise(async (resolve, reject) => {
         await SpotifyUser.findById(discordId)
             .then((result) => {
-                if (!result) reject(false);
+                if (!result) resolve(false);
                 resolve(true);
             })
             .catch((err) => {
                 logger.error(`Failed searching spotify data inside DB for user ${discordId} with error: ${err}`);
-                reject(false);
+                resolve(false);
             });
     });
 }

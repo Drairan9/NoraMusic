@@ -7,7 +7,7 @@ passport.use(
         {
             clientID: process.env.SPOTIFY_CLIENT_ID,
             clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3000/login/auth/spotify/redirect',
+            callbackURL: `${process.env.SERVER_ORIGIN}/login/auth/spotify/redirect`,
             passReqToCallback: true,
         },
         async (req, accessToken, refreshToken, profile, done) => {

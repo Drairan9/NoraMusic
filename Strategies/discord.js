@@ -7,7 +7,6 @@ import { getUserAvatarUrlService } from '#Services/UserService.js';
 const scopes = ['identify', 'guilds'];
 
 passport.serializeUser((user, done) => {
-    console.log('Serialization SERIALIZE');
     return done(null, user.discord_id);
 });
 
@@ -26,7 +25,7 @@ passport.use(
         {
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: 'http://localhost:3000/login/auth/discord/redirect',
+            callbackURL: `${process.env.SERVER_ORIGIN}/login/auth/discord/redirect`,
             scope: scopes,
         },
         async (accessToken, refreshToken, profile, done) => {
