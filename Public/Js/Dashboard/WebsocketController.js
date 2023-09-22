@@ -92,131 +92,51 @@ class emitServer {
 
     static playPause() {
         socket.emit('play-pause', (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static skipBack() {
         console.log('back');
         socket.emit('skip-back', (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static skipForward() {
         console.log('forward');
         socket.emit('skip-forward', (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static shuffle() {
         socket.emit('shuffle', (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static queueStop() {
         socket.emit('queue-stop', (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static setRepeatMode(mode) {
         socket.emit('set-repeat-mode', mode, (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static jumpTo(index) {
         socket.emit('jump-to', index, (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
     static remove(index) {
         socket.emit('remove', index, (response) => {
-            if (!response) {
-                SnackBar({
-                    status: 'error',
-                    message: 'Error',
-                });
-            } else {
-                SnackBar({
-                    status: 'success',
-                    message: 'Success',
-                });
-            }
+            this.displayResponse(response);
         });
     }
 
@@ -238,5 +158,19 @@ class emitServer {
                 }
             });
         });
+    }
+
+    static displayResponse(response) {
+        if (!response) {
+            SnackBar({
+                status: 'error',
+                message: 'Error',
+            });
+        } else {
+            SnackBar({
+                status: 'success',
+                message: 'Success',
+            });
+        }
     }
 }
