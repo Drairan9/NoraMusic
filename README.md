@@ -10,4 +10,5 @@ Important
 * Note that ytdl-core can be problematic; I recommend using youtube-ext.
 * Keep in mind that this project was never finished, so some functions or certain commands may be missing.
 
-![noramusic1](https://github.com/Drairan9/NoraMusic/assets/51862801/b15776b7-2a4d-403e-be55-d784402a1118)
+
+![noramusic1](https://github.com/Drairan9/NoraMusic/assets/51862801/3070371b-546d-4faa-909c-b1ed8fee6cac)
